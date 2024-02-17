@@ -61,6 +61,7 @@
 <a name="useful_commands"></a> 
 ## Полезные команды
  - Сохранить список зависимостей в файл requirements.txt: `pip freeze > requirements.txt`
+ - Сохранить список зависимостей в файл cuda_requirements.txt: `pip freeze > cuda_requirements.txt`
  - Не забывайте активировать venv при работе через консоль Ubuntu: `source venv/bin/activate`
  - Отобразить зависимости в консоль: `pip list`
  - Если вы случайно добавили некоторые файлы в контроль версий, которые не нужно было, можете воспользоваться следующей командой: `git rm --cache [путь до файла]`
@@ -70,7 +71,7 @@
 
 <a name="basic_technologies"></a> 
 ## Основные технологии / фрейморки
-`OpenCV`, `Pillow`, `Keras`, `BytelIO`
+`OpenCV` / `Keras`, `Pillow`, `BytelIO`
 <br /> <br />
 
 
@@ -89,12 +90,10 @@
 <a name="main_dependencies"></a> 
 ## Основные зависимости
 1. Если работаете через Local terminal (Windows PowerShell) без Cuda:
- - `tensorflow==2.15.0`
- - `keras==2.15.0`
+`pip install tensorflow==2.15.0, keras==2.15.0, pillow==10.2.0`
 
 2. Если работаете через Ubuntu terminal и установили Cuda:
- - `tensorflow==2.15.0.post1`
- - `keras==3.0.0`
+`pip install tensorflow==2.15.0.post1, keras==3.0.0, pillow==10.2.0`
 <br /> <br />
 
 
@@ -102,21 +101,21 @@
 ## Музычка для разработки [Neko's edition]
 • Just chill <br />
 |__ [SpaceWave: Ambient Cyberpunk Music](https://www.youtube.com/watch?v=FULCBFlX3Eo) <br />
-![img.png](data_for_doc/space_wave_ambient_cyberpunk_music.png)
+![img.png](data_for_readme/space_wave_ambient_cyberpunk_music.png)
 <br /> | <br /> 
 |__ [SpaceWave: Zenctuary](https://www.youtube.com/watch?v=h4k1wIkmf7Q) <br />
-![img.png](data_for_doc/space_wave_zenctuary.png)
+![img.png](data_for_readme/space_wave_zenctuary.png)
 <br /> | <br /> 
 |__ [SpaceWave: Vaporway](https://www.youtube.com/watch?v=70Wcz-k_PxY) <br />
-![img.png](data_for_doc/space_wave_vaporway.png)
+![img.png](data_for_readme/space_wave_vaporway.png)
 
-• Dark Bass <br />
+• Dark bass for hardcore coding >:D <br />
 |__ [Black Sun Empire: Future Frame](https://www.youtube.com/watch?v=FZyqhW0uEmI&list=RD8zLJS8bvLEE&index=21) ♡ <br /> 
-![img.png](data_for_doc/black_sun_empire_future_frame.png)
+![img.png](data_for_readme/black_sun_empire_future_frame.png)
 <br /> | <br /> 
 |__ [Black Sun Empire: Podcast 04 HQ](https://www.youtube.com/watch?v=TwHS3c6zbwI) [0:00 - 8:15] <br />
-![img.png](data_for_doc/black_sun_empire_podcast_04_hq.png)
+![img.png](data_for_readme/black_sun_empire_podcast_04_hq.png)
 <br /> | <br /> 
 |__ [Black Sun Empire: Podcast 21 HQ](https://www.youtube.com/watch?v=hgOzpEO47ZI&t=706s) <br />
-![img.png](data_for_doc/black_sun_empire_podcast_21_hq.png)
+![img.png](data_for_readme/black_sun_empire_podcast_21_hq.png)
 <br /> <br />

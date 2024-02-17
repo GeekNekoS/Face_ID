@@ -9,7 +9,7 @@ def text_recognition(file_path):
 
 
 def main():
-    file_path = settings.IMAGES_DIR + "\\text.jpg"
+    file_path = settings.IMAGES_DIR + "\\images/examples/1.png"
     text = text_recognition(file_path=file_path)
     print(text)
 
