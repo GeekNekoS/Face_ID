@@ -1,6 +1,6 @@
 ![Python](https://img.shields.io/badge/-Python-05122A?style=flat&logo=python)&nbsp;
 
-## *SYNC SCANNER*
+## *FACE ID*
 Программа, помогающая считывать буквенные данные с фотографий
 <br /> <br />
 
@@ -21,7 +21,7 @@
 ## Установка проекта на ПК
 1. Откройте консоль, вбив в поисковике ПК: <code>cmd</code>
 2. Перейдите в директорию, куда хотите установить проект, пропишите следующую команду в консоль: <code>cd N:\Путь\до\папки\с\проектами</code>
-3. Введите следующую команду: git clone https://github.com/[ник]/Sync_scanner.git
+3. Введите следующую команду: git clone https://github.com/[ник]/Face_ID.git
 4. Откройте скачанный проект и можете приступать к разработке
 <br /> <br />
 
@@ -112,6 +112,9 @@
 <br /> <br />
 
 • Dark bass <br />
+|__ [Don't You Stasis (V O E Remix)](https://www.youtube.com/watch?v=hbZ5UB_tM6o) <br />
+![img.png](data_for_readme/dont_you_stasis_voe_remix.png)
+<br /> | <br />
 |__ [Black Sun Empire: Podcast 04 HQ](https://www.youtube.com/watch?v=TwHS3c6zbwI) [0:00 - 8:15] <br />
 ![img.png](data_for_readme/black_sun_empire_podcast_04_hq.png)
 <br /> <br />
