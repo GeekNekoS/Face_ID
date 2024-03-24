@@ -95,26 +95,54 @@
 <br /> <br />
 
 
-<a name="nekos_music"></a> 
+<a name="nekos_music"></a>
 ## Музычка для разработки [Neko's edition]
-• Dark relaxing ambience <br />
-|__ [Rhan-Tegoth Part 1](https://www.youtube.com/watch?v=ydHzwERb2rY&t=328s), [Rhan-Tegoth part 2](https://www.youtube.com/watch?v=ZGImCRim704) <br />
-![img.png](data_for_readme/rhan_tegoth.png)
-<br /> | <br />
-|__ [Celestial Warchants](https://www.youtube.com/watch?v=56KHX6tMZ0g) <br />
-![img.png](data_for_readme/celestial_warchants.png)
-<br /> | <br />
-|__ [Gothic Choirs and Ancient Cults](https://www.youtube.com/watch?v=OoiP5mBRBwc) <br />
-![img.png](data_for_readme/gothic_choirs_and_ancient_cults.png)
-<br /> | <br />
-|__ [Shadowlands](https://www.youtube.com/watch?v=000z5zd6mrc) <br />
-![img.png](data_for_readme/shadowlands.png)
-<br /> <br />
+<details>
+  <summary>
+    <a href='https://www.youtube.com/watch?v=E_lpOJRIKgE'>Deep Drum and Bass Mix</a> ♡
+  </summary>
+  <img src='data_for_readme/deep_drum_and_bass_mix.png'></img>
+</details> 
 
-• Dark bass <br />
-|__ [Don't You Stasis (V O E Remix)](https://www.youtube.com/watch?v=hbZ5UB_tM6o) <br />
-![img.png](data_for_readme/dont_you_stasis_voe_remix.png)
-<br /> | <br />
-|__ [Black Sun Empire: Podcast 04 HQ](https://www.youtube.com/watch?v=TwHS3c6zbwI) [0:00 - 8:15] <br />
-![img.png](data_for_readme/black_sun_empire_podcast_04_hq.png)
+<details>
+  <summary>
+    <a href='https://www.youtube.com/watch?v=hbZ5UB_tM6o'>Don't You Stasis (V O E Remix)</a>
+  </summary>
+  <img src='data_for_readme/dont_you_stasis_voe_remix.png'></img>
+</details> 
+
+<details>
+  <summary>
+    <a href='https://www.youtube.com/watch?v=TwHS3c6zbwI'>Black Sun Empire: Podcast 04 HQ</a>
+  </summary>
+  <img src='data_for_readme/black_sun_empire_podcast_04_hq.png'></img>
+</details> 
+
+<details>
+  <summary>
+    <a href='https://www.youtube.com/watch?v=OoiP5mBRBwc'>Gothic Choirs and Ancient Cults</a>
+  </summary>
+  <img src='data_for_readme/gothic_choirs_and_ancient_cults.png'></img>
+</details> 
+
+<details>
+  <summary>
+    <a href='https://www.youtube.com/watch?v=ydHzwERb2rY&t=328s'>Rhan-Tegoth Part 1</a>, <a href='https://www.youtube.com/watch?v=ZGImCRim704'>Rhan-Tegoth Part 2</a>
+  </summary>
+  <img src='data_for_readme/rhan_tegoth.png'></img>
+</details> 
+
+<details>
+  <summary>
+    <a href='https://www.youtube.com/watch?v=56KHX6tMZ0g'>Celestial Warchants</a>
+  </summary>
+  <img src='data_for_readme/celestial_warchants.png'></img>
+</details> 
+
+<details>
+  <summary>
+    <a href='https://www.youtube.com/watch?v=000z5zd6mrc'>Shadowlands</a>
+  </summary>
+  <img src='data_for_readme/shadowlands.png'></img>
+</details> 
 <br /> <br />
