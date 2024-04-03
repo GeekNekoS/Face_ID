@@ -7,5 +7,5 @@ def find_faces_distance(face1_encoding: np.array, face2_encoding: np.array) -> f
     return np.linalg.norm(face1_encoding - face2_encoding)
 
 
-def compare2faces(face1_encoding: np.array, face2_encoding: np.array, tolerance=0.6) -> bool:
+def compare2faces(face1_encoding: np.array, face2_encoding: np.array, tolerance: float = 0.6) -> bool:
     return find_faces_distance(face1_encoding, face2_encoding) <= tolerance
