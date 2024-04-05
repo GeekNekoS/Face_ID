@@ -57,6 +57,10 @@
 13. Обновите `pip`: `pip install --upgrade pip`
 14. Установите `tensorflow` с `Cuda`: `pip install tensorflow[and-cuda]`
 15. Установите Keras: `pip install --upgrade keras==3.0.0`
+16. Обновление Keras-cv, чтобы виделись зависимости:`pip install --upgrade keras-cv tensorflow`
+17. Обновление Keras: `pip install --upgrade keras`
+18. Чтобы устанавливать последние изменения для KerasCV и Keras, вы можете воспользоваться пакетом nightly: `pip install --upgrade keras-cv-nightly tf-nightly`
+19. `pip install tensorrt`
 <br /> <br />
 
 
@@ -68,17 +72,25 @@
  - Отобразить зависимости в консоль: `pip list`
  - Удалить файл из контроля версий: `git rm --cache [путь до файла]`
  - Удалить все зависимости: `pip uninstall -y -r requirements.txt`
+ - Установить зависимости: `pip install -r requirements.txt`
 <br /> <br />
 
 
 <a name="basic_technologies"></a> 
 ## Основные технологии / фрейморки
-`OpenCV` / `Keras`, `Pillow`, `BytelIO`
+- `TensorFlow` (`Keras`) - библиотека для глубокого обучения, которая предоставляет инструменты для создания и обучения моделей нейронных сетей
+- `OpenCV` - библиотека для обработки изображений, которая предоставляет широкий функционал для обработки изображений, включая детекцию лиц, изменение размеров и выравнивание
+- `Dlib` - библиотека для извлечения признаков, которая предоставляет мощные инструменты для детекции лиц и извлечения признаков
+- `Scikit-learn` - библиотека для сравнения и оценки сходства, содержит алгоритмы для сравнения и оценки точности моделей
+- `Pillow` - библиотека для обработки файлов изображений в разных форматах, включая JPEG и PNG, и проведения изменения размеров и преобразование форматов
+- `BytelIO`
 <br /> <br />
 
 
 <a name="useful_information"></a> 
 ## Полезная информация
+ - [Object Detection with KerasCV](https://keras.io/guides/keras_cv/object_detection_keras_cv/)
+ - [Build a Deep Face Detection Model with Python and Tensorflow](https://www.youtube.com/watch?v=N_W4EYtsa10)
  - [Пишем нейросеть на Python с нуля](https://proglib.io/p/pishem-neyroset-na-python-s-nulya-2020-10-07)
  - [Распознавание текста с изображения на Python | EasyOCR vs Tesseract | Компьютерное зрение](https://www.youtube.com/watch?v=H_nXZSM4WiU)
  - [Python + OpenCV + Keras: делаем распознавалку текста за полчаса](https://habr.com/ru/articles/466565/)
@@ -88,10 +100,13 @@
 <a name="main_dependencies"></a> 
 ## Основные зависимости
 1. Если работаете через Local terminal (Windows PowerShell) без Cuda:
-`pip install tensorflow==2.15.0, keras==2.15.0, pillow==10.2.0`
+`pip install tensorflow==2.15.0 keras==2.15.0 pillow==10.2.0`
 
 2. Если работаете через Ubuntu terminal и установили Cuda:
-`pip install tensorflow==2.15.0.post1, keras==3.0.0, pillow==10.2.0`
+`pip install tensorflow==2.15.0.post1 keras==3.0.0 pillow==10.2.0`
+
+3. For `Build a Deep Face Detection Model with Python and Tensorflow` guide:
+`pip install labelme tensorflow tensorflow-gpu opencv-python matplotlib albumentations opencv-contrib-python pillow`
 <br /> <br />
 
 
