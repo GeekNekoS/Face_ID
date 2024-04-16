@@ -82,3 +82,4 @@ urllib3==2.2.1
 Werkzeug==3.0.2
 wrapt==1.14.1
 zipp==3.18.1
+pandas==2.2.2
