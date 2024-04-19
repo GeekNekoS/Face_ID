@@ -6,7 +6,7 @@ from images_preprocessing import preprocessing_X
 from images_preprocessing import preprocessing_y
 
 
-train_path = 'data_for_learning/training.csv'
+train_path = 'facial_keypoints_detection/data_for_learning/training.csv'
 test_path = 'facial_keypoints_detection/test/test.csv'
 id_path = 'facial_keypoints_detection/IdLookupTable.csv'
 
