@@ -6,7 +6,7 @@ from facial_keypoints_detection.data_preprocessing.images_preprocessing import p
 from facial_keypoints_detection.data_preprocessing.images_preprocessing import preprocessing_y
 
 
-train_path = '../training_data/training.csv'
+train_path = '../data_for_learning/training.csv'
 train = pd.read_csv(train_path)
 X_train = preprocessing_X(train, 96)
 train.drop('Image', axis=1, inplace=True)
@@ -34,7 +34,8 @@ model = Sequential([
     Dense(128, activation='relu'),
     Dense(30)
 ])
-optimizer = Adam(learning_rate=0.001)
-model.compile(optimizer=optimizer, loss='mae', metrics=['accuracy'])
-history = model.fit(X_train.reshape(-1, 1, 96, 96), y_train, epochs=10, batch_size=32, validation_split=0.2)
-model.save('facial_keypoints_detection(CNN, 3 epochs).keras')
+print(model.summary())
+# optimizer = Adam(learning_rate=0.001)
+# model.compile(optimizer=optimizer, loss='mae', metrics=['accuracy'])
+# history = model.fit(X_train.reshape(-1, 1, 96, 96), y_train, epochs=10, batch_size=32, validation_split=0.2)
+# model.save('facial_keypoints_detection(CNN, 3 epochs).keras')
