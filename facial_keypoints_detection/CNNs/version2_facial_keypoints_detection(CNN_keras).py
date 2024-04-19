@@ -13,14 +13,21 @@ y_train = preprocessing_y(train)
 
 model = keras.Sequential([
     keras.layers.Input((1, 96, 96), batch_size=32, dtype='float32'),
-    keras.layers.Conv2D(32, (3, 3), strides=1, activation='relu', input_shape=(1, 96, 96), data_format='channels_first'),
+    keras.layers.Conv2D(32, (3, 3), strides=1, activation='relu', data_format='channels_first'),
+    keras.layers.Dropout(0.1),
+    keras.layers.BatchNormalization(),
     keras.layers.MaxPooling2D((2, 2), strides=1),
     keras.layers.Conv2D(64, (2, 2), strides=1, activation='relu', data_format='channels_first'),
+    keras.layers.Dropout(0.1),
+    keras.layers.BatchNormalization(),
     keras.layers.MaxPooling2D((2, 2), strides=1),
     keras.layers.Conv2D(128, (2, 2), strides=1, activation='relu', data_format='channels_first'),
+    keras.layers.Dropout(0.1),
+    keras.layers.BatchNormalization(),
     keras.layers.MaxPooling2D((2, 2), strides=1),
     keras.layers.Flatten(),
     keras.layers.Dense(500, activation='relu'),
+    keras.layers.Dropout(0.1),
     keras.layers.Dense(500, activation='relu'),
     keras.layers.Dense(30),
 ])
