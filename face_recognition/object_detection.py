@@ -1,26 +1,18 @@
 import os
+import cv2
+import keras_cv
+import numpy as np
+from PIL import Image
+from keras_cv import visualization
+
 
 os.environ["KERAS_BACKEND"] = "tensorflow"
 
-from tensorflow import data as tf_data
-import tensorflow_datasets as tfds
-import keras
-import keras_cv
-import numpy as np
-from keras_cv import bounding_box
-import os
-from keras_cv import visualization
-import tqdm
+# filepath = "data/collected_images/6b081f20-ee5f-11ee-98be-f42679e0f8f2.jpg"
+filepath = "data/nekos_images/test_8.jpg"
 
-
-pretrained_model = keras_cv.models.YOLOV8Detector.from_preset(
-    "yolo_v8_m_pascalvoc", bounding_box_format="xywh"
-)
-
-# filepath = keras.utils.get_file(origin="https://i.imgur.com/gCNcJJI.jpg")
-filepath = "data/collected_images/6b081f20-ee5f-11ee-98be-f42679e0f8f2.jpg"
-image = keras.utils.load_img(filepath)
-image = np.array(image)
+image = cv2.imread(filepath)
+image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
 visualization.plot_image_gallery(
     np.array([image]),
@@ -61,27 +53,10 @@ class_ids = [
 ]
 class_mapping = dict(zip(range(len(class_ids)), class_ids))
 
-# y_pred = pretrained_model.predict(image_batch)
-# # y_pred is a bounding box Tensor:
-# # {"classes": ..., boxes": ...}
-# visualization.plot_bounding_box_gallery(
-#     image_batch,
-#     value_range=(0, 255),
-#     rows=1,
-#     cols=1,
-#     y_pred=y_pred,
-#     scale=5,
-#     font_scale=0.7,
-#     bounding_box_format="xywh",
-#     class_mapping=class_mapping,
-# )
-
 prediction_decoder = keras_cv.layers.NonMaxSuppression(
     bounding_box_format="xywh",
     from_logits=True,
-    # Decrease the required threshold to make predictions get pruned out
     iou_threshold=0.2,
-    # Tune confidence threshold for predictions to pass NMS
     confidence_threshold=0.7,
 )
 
@@ -92,7 +67,7 @@ pretrained_model = keras_cv.models.YOLOV8Detector.from_preset(
 )
 
 y_pred = pretrained_model.predict(image_batch)
-visualization.plot_bounding_box_gallery(
+output_image_pil = visualization.plot_bounding_box_gallery(
     image_batch,
     value_range=(0, 255),
     rows=1,
@@ -103,3 +78,14 @@ visualization.plot_bounding_box_gallery(
     bounding_box_format="xywh",
     class_mapping=class_mapping,
 )
+
+output_image_pil.savefig("output_image.png")
+output_image_pil.close()
+
+output_image_pil = Image.open("output_image.png")
+output_image_array = np.asarray(output_image_pil, dtype=np.uint8)
+output_image = cv2.cvtColor(output_image_array, cv2.COLOR_RGB2BGR)
+
+cv2.imshow('Detection Results', output_image)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
