@@ -1,102 +1,43 @@
-import os
 import cv2
-import keras
-import keras_cv
-import numpy as np
-from PIL import Image
-from keras_cv import visualization
-import tensorflow as tf
+from settings import BASE_DIR
 
-os.environ["KERAS_BACKEND"] = "tensorflow"
 
-pretrained_model = keras.applications.ResNet50(
-    include_top=True,
-    weights="imagenet",
-    input_tensor=None,
-    input_shape=None,
-    pooling=None,
-    classes=1000,
-    classifier_activation="softmax",
-)
+def detect_face(image_path, output_path):
+    # Загрузка каскадного классификатора для детекции лиц
+    face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
-filepath = "../data/nekos_images/test_8.jpg"
-# filepath_1 = "data/collected_images/6b081f20-ee5f-11ee-98be-f42679e0f8f2.jpg"
+    # Загрузка изображения
+    image = cv2.imread(image_path)
+    if image is None:
+        raise FileNotFoundError(f"Image file '{image_path}' not found.")
 
-image = keras.utils.load_img(
-    filepath,
-    color_mode="rgb",
-    target_size=(224, 224),
-    interpolation="nearest",
-    keep_aspect_ratio=False,
-)
+    # Преобразование изображения в оттенки серого (для детекции лиц работает лучше)
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-# image = cv2.imread(filepath)
-image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    # Детекция лиц на изображении
+    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
 
-inference_resizing = keras_cv.layers.Resizing(
-    224, 224, pad_to_aspect_ratio=True, bounding_box_format="xywh"
-)
-image_batch = inference_resizing([image])
+    for (x, y, w, h) in faces:
+        cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
-# image_batch = tf.data.Dataset.from_tensor_slices([image])
+    cv2.imwrite(output_path, image)
 
-class_ids = [
-    "Face",
-    "Aeroplane",
-    "Bicycle",
-    "Bird",
-    "Boat",
-    "Bottle",
-    "Bus",
-    "Car",
-    "Cat",
-    "Chair",
-    "Cow",
-    "Dining Table",
-    "Dog",
-    "Horse",
-    "Motorbike",
-    "Person",
-    "Potted Plant",
-    "Sheep",
-    "Sofa",
-    "Train",
-    "Tvmonitor",
-    "Total",
-]
-class_mapping = dict(zip(range(len(class_ids)), class_ids))
+    return faces
 
-prediction_decoder = keras_cv.layers.NonMaxSuppression(
-    bounding_box_format="xywh",
-    from_logits=True,
-    iou_threshold=0.2,
-    confidence_threshold=0.7,
-)
 
-y_pred = pretrained_model.predict(image_batch)
-output_image_pil = visualization.plot_bounding_box_gallery(
-    image_batch,
-    value_range=(0, 255),
-    rows=1,
-    cols=1,
-    y_pred=y_pred,
-    scale=2,
-    font_scale=0.7,
-    bounding_box_format="xywh",
-    class_mapping=class_mapping,
-)
+# Пример использования
+input_image_path = "data/collected_images/6976fd7e-ee5f-11ee-a961-f42679e0f8f2.jpg"
+output_image_path = "output.jpg"
+print(input_image_path)
 
-output_image_pil.savefig("output_image.png")
-output_image_pil.close()
+faces = detect_face(input_image_path, output_image_path)
+if len(faces) > 0:
+    print("Лица обнаружены:")
+    for i, (x, y, w, h) in enumerate(faces, 1):
+        print(f"Лицо {i}: координаты ({x}, {y}), ширина {w}, высота {h}")
+else:
+    print("Лица не обнаружены на изображении.")
 
-output_image_pil = Image.open("output_image.png")
-output_image_array = np.asarray(output_image_pil, dtype=np.uint8)
-output_image = cv2.cvtColor(output_image_array, cv2.COLOR_RGB2BGR)
 
-cv2.imshow('Detection Results', output_image)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
-
-input_arr = keras.utils.img_to_array(image)
-input_arr = np.array([input_arr])  # Convert single image to a batch.
-predictions = pretrained_model.predict(input_arr)
+# Этот код использует каскадный классификатор Хаара из OpenCV для детекции лиц на изображении. Учитывая указанную версию
+# OpenCV (4.9.0.80), используется новый способ загрузки классификатора с помощью cv2.data.haarcascades

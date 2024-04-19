@@ -1,34 +1,47 @@
 import os
 import cv2
+import keras
 import keras_cv
 import numpy as np
 from PIL import Image
 from keras_cv import visualization
-
+import tensorflow as tf
 
 os.environ["KERAS_BACKEND"] = "tensorflow"
 
-# filepath = "data/collected_images/6b081f20-ee5f-11ee-98be-f42679e0f8f2.jpg"
-filepath = "data/nekos_images/test_8.jpg"
+pretrained_model = keras.applications.ResNet50(
+    include_top=True,
+    weights="imagenet",
+    input_tensor=None,
+    input_shape=None,
+    pooling=None,
+    classes=1000,
+    classifier_activation="softmax",
+)
 
-image = cv2.imread(filepath)
+filepath = "data/nekos_images/test_8.jpg"
+# filepath_1 = "data/collected_images/6b081f20-ee5f-11ee-98be-f42679e0f8f2.jpg"
+
+image = keras.utils.load_img(
+    filepath,
+    color_mode="rgb",
+    target_size=(224, 224),
+    interpolation="nearest",
+    keep_aspect_ratio=False,
+)
+
+# image = cv2.imread(filepath)
 image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-visualization.plot_image_gallery(
-    np.array([image]),
-    value_range=(0, 255),
-    rows=1,
-    cols=1,
-    scale=5,
-)
-
 inference_resizing = keras_cv.layers.Resizing(
-    640, 640, pad_to_aspect_ratio=True, bounding_box_format="xywh"
+    224, 224, pad_to_aspect_ratio=True, bounding_box_format="xywh"
 )
-
 image_batch = inference_resizing([image])
 
+# image_batch = tf.data.Dataset.from_tensor_slices([image])
+
 class_ids = [
+    "Face",
     "Aeroplane",
     "Bicycle",
     "Bird",
@@ -60,12 +73,6 @@ prediction_decoder = keras_cv.layers.NonMaxSuppression(
     confidence_threshold=0.7,
 )
 
-pretrained_model = keras_cv.models.YOLOV8Detector.from_preset(
-    "yolo_v8_m_pascalvoc",
-    bounding_box_format="xywh",
-    prediction_decoder=prediction_decoder,
-)
-
 y_pred = pretrained_model.predict(image_batch)
 output_image_pil = visualization.plot_bounding_box_gallery(
     image_batch,
@@ -73,7 +80,7 @@ output_image_pil = visualization.plot_bounding_box_gallery(
     rows=1,
     cols=1,
     y_pred=y_pred,
-    scale=5,
+    scale=2,
     font_scale=0.7,
     bounding_box_format="xywh",
     class_mapping=class_mapping,
@@ -89,3 +96,7 @@ output_image = cv2.cvtColor(output_image_array, cv2.COLOR_RGB2BGR)
 cv2.imshow('Detection Results', output_image)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
+
+input_arr = keras.utils.img_to_array(image)
+input_arr = np.array([input_arr])  # Convert single image to a batch.
+predictions = pretrained_model.predict(input_arr)

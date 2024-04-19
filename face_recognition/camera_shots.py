@@ -4,7 +4,7 @@ import uuid
 import cv2
 
 
-IMAGES_PATH = os.path.join('../data', 'collected_images')
+IMAGES_PATH = os.path.join('data', 'collected_images')
 number_images = 30
 
 cap = cv2.VideoCapture(0)  # 0 - номер вашей видеокамеры
