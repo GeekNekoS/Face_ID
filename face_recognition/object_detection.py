@@ -9,7 +9,7 @@ from keras_cv import visualization
 os.environ["KERAS_BACKEND"] = "tensorflow"
 
 # filepath = "data/collected_images/6b081f20-ee5f-11ee-98be-f42679e0f8f2.jpg"
-filepath = "data/nekos_images/test_8.jpg"
+filepath = "../data/nekos_images/test_8.jpg"
 
 image = cv2.imread(filepath)
 image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)

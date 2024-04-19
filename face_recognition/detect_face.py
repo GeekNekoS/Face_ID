@@ -19,7 +19,7 @@ pretrained_model = keras.applications.ResNet50(
     classifier_activation="softmax",
 )
 
-filepath = "data/nekos_images/test_8.jpg"
+filepath = "../data/nekos_images/test_8.jpg"
 # filepath_1 = "data/collected_images/6b081f20-ee5f-11ee-98be-f42679e0f8f2.jpg"
 
 image = keras.utils.load_img(
