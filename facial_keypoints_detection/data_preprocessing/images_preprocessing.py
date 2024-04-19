@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import tensorflow as tf
 
 
 def convertor(img: np.array, img_size) -> np.array:
@@ -8,7 +9,7 @@ def convertor(img: np.array, img_size) -> np.array:
     return img
 
 
-def preprocessing_X(X: pd.DataFrame, img_size: int) -> np.array:
+def preprocessing_X(X: pd.DataFrame, img_size: int,) -> np.array:
     X.ffill(inplace=True)
     m, n = X.shape
     img_lst = []
@@ -17,7 +18,9 @@ def preprocessing_X(X: pd.DataFrame, img_size: int) -> np.array:
         img = convertor(img, img_size)
         img_lst.append(img)
     img_array = np.array(img_lst, dtype='float32')
-    return img_array
+    print(img_array.shape)
+    X = tf.data.Dataset.from_tensor_slices(img_array)
+    return X
 
 
 def preprocessing_y(y: pd.DataFrame) -> np.array:
@@ -26,4 +29,5 @@ def preprocessing_y(y: pd.DataFrame) -> np.array:
         preprocessed_y = y.iloc[i, :].values
         keypoints_lst.append(preprocessed_y)
     keypoints_array = np.array(keypoints_lst, dtype='float32')
-    return keypoints_array
+    y = tf.data.Dataset.from_tensor_slices(keypoints_array)
+    return y
