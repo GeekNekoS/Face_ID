@@ -3,21 +3,14 @@ import numpy as np
 import tensorflow as tf
 from sklearn.model_selection import train_test_split
 from copy import deepcopy
-import matplotlib.pyplot as plt
 
 
-def plot_sample(x, y, axis):
-    img = x.reshape(96, 96)
-    axis.imshow(img, cmap='gray')
-    axis.scatter(y[0::2], y[1::2], marker='x', s=10)
-
-
-def data_augmentation(img_array: np.array, keypoints_array: np.array) -> tuple[np.array, np.array]:
+def data_augmentation(img_array: np.array, keypoints_array: np.array, img_size: int) -> tuple[np.array, np.array]:
     flipped_img_array = img_array[:, :, :, ::-1]
     flipped_img_array = np.array(flipped_img_array)
     flipped_keypoints_array = deepcopy(keypoints_array)
-    for i in range(0, 30, 2):
-        flipped_keypoints_array[:, i] = abs(96 - flipped_keypoints_array[:, i])
+    for i in range(0, keypoints_array.shape[1], 2):
+        flipped_keypoints_array[:, i] = abs(img_size - flipped_keypoints_array[:, i])
     img_array = np.concatenate((img_array, flipped_img_array))
     keypoints_array = np.concatenate((keypoints_array, flipped_keypoints_array))
     return img_array, keypoints_array
@@ -60,7 +53,7 @@ def preprocessing_y(y: pd.DataFrame) -> np.array:
 def make_pipeline(dataset: pd.DataFrame, img_size: int, batch_size: int, augmentation: bool = False) -> tuple[tf.data.Dataset, tf.data.Dataset]:
     img_array, keypoints_array = preprocessing(dataset, img_size)
     if augmentation:
-        img_array, keypoints_array = data_augmentation(img_array, keypoints_array, )
+        img_array, keypoints_array = data_augmentation(img_array, keypoints_array, img_size)
     X_train, X_val, y_train, y_val = train_test_split(img_array, keypoints_array, test_size=0.3)
     X_train = tf.data.Dataset.from_tensor_slices(X_train)
     X_val = tf.data.Dataset.from_tensor_slices(X_val)
