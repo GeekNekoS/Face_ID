@@ -6,13 +6,14 @@ import tensorflow as tf
 
 
 batch_size = 32
+input_shape = (1, 96, 96)
 gpu_devices = tf.config.experimental.list_physical_devices('GPU')
 if gpu_devices:
    tf.config.experimental.set_memory_growth(gpu_devices[0], True)
 
 
 model = keras.Sequential([
-    keras.layers.Input((1, 96, 96), batch_size=32, dtype='float32'),
+    keras.layers.Input(input_shape, batch_size=32, dtype='float32'),
     keras.layers.Conv2D(32, (3, 3), activation='relu', data_format='channels_first'),
     keras.layers.MaxPooling2D((2, 2), strides=1),
     keras.layers.BatchNormalization(),
