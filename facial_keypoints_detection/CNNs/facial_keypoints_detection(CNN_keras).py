@@ -6,15 +6,15 @@ from facial_keypoints_detection.data_preprocessing.images_preprocessing import m
 
 
 def model_constructor(inputA):
-    dr = 0.3
+    dr = 0.1
     x = inputA
-    x = Conv2D(32, kernel_size=3, activation='relu', data_format='channels_first')(x)
+    x = Conv2D(32, kernel_size=3, activation='relu', data_format='channels_first', padding='same')(x)
     x = MaxPooling2D(2, data_format='channels_first')(x)
     x = BatchNormalization()(x)
-    x = Conv2D(64, kernel_size=3, activation='relu', data_format='channels_first')(x)
+    x = Conv2D(64, kernel_size=3, activation='relu', data_format='channels_first', padding='same')(x)
     x = MaxPooling2D(2, data_format='channels_first')(x)
     x = BatchNormalization()(x)
-    x = Conv2D(128, kernel_size=3, activation='relu', data_format='channels_first')(x)
+    x = Conv2D(128, kernel_size=3, activation='relu', data_format='channels_first', padding='same')(x)
     x = MaxPooling2D(2, data_format='channels_first')(x)
     x = BatchNormalization()(x)
     x = Flatten()(x)
@@ -39,9 +39,7 @@ model = Model(inputs=[inputA], outputs=final)
 print(model.summary())
 
 optimizer = Adam(learning_rate=0.001)
-# model.compile(optimizer=optimizer, loss='mse', metrics=['mse'])
 model.compile(optimizer=optimizer, loss='mse', metrics=['accuracy'])
-# history = model.fit(X_train.reshape(-1, 1, 96, 96), y_train, epochs=10, batch_size=32, validation_split=0.2)
 history = model.fit(train, validation_data=val, epochs=10, verbose=1)
 
 model.save('facial_keypoints_detection(CNN, 3 epochs).keras')
