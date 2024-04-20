@@ -19,8 +19,7 @@ def preprocessing_X(X: pd.DataFrame, img_size: int,) -> np.array:
         img_lst.append(img)
     img_array = np.array(img_lst, dtype='float32')
     print(img_array.shape)
-    X = tf.data.Dataset.from_tensor_slices(img_array)
-    return X
+    return img_array
 
 
 def preprocessing_y(y: pd.DataFrame) -> np.array:
@@ -29,5 +28,4 @@ def preprocessing_y(y: pd.DataFrame) -> np.array:
         preprocessed_y = y.iloc[i, :].values
         keypoints_lst.append(preprocessed_y)
     keypoints_array = np.array(keypoints_lst, dtype='float32')
-    y = tf.data.Dataset.from_tensor_slices(keypoints_array)
-    return y
+    return keypoints_array
