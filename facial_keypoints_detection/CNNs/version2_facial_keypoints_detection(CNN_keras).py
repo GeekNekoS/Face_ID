@@ -15,10 +15,13 @@ model = keras.Sequential([
     keras.layers.Input((1, 96, 96), batch_size=32, dtype='float32'),
     keras.layers.Conv2D(32, (3, 3), activation='relu', data_format='channels_first'),
     keras.layers.MaxPooling2D((2, 2), strides=1),
+    keras.layers.BatchNormalization(),
     keras.layers.Conv2D(64, (3, 3), strides=1, activation='relu'),
     keras.layers.MaxPooling2D((2, 2), strides=1),
+    keras.layers.BatchNormalization(),
     keras.layers.Conv2D(128, (3, 3), strides=1, activation='relu'),
     keras.layers.MaxPooling2D((2, 2), strides=1),
+    keras.layers.BatchNormalization(),
     keras.layers.Flatten(),
     keras.layers.Dense(512, activation='relu'),
     keras.layers.Dropout(0.3),
@@ -31,7 +34,7 @@ model = keras.Sequential([
 
 dataset_path = '../data_for_learning/training.csv'
 dataset = pd.read_csv(dataset_path)
-train, val = make_pipeline(dataset, 96, batch_size)
+train, val = make_pipeline(dataset, 96, batch_size, augmentation=True)
 
 optimizer = Adam(learning_rate=0.001)
 model.compile(optimizer=optimizer, loss='mae', metrics=['accuracy'])
