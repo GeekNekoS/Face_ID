@@ -15,13 +15,13 @@ if gpu_devices:
 model = keras.Sequential([
     keras.layers.Input(input_shape, batch_size=32, dtype='float32'),
     keras.layers.Conv2D(32, (3, 3), activation='relu', data_format='channels_first'),
-    keras.layers.MaxPooling2D((2, 2), strides=1),
+    keras.layers.MaxPooling2D(2, data_format='channels_first'),
     keras.layers.BatchNormalization(),
-    keras.layers.Conv2D(64, (3, 3), strides=1, activation='relu'),
-    keras.layers.MaxPooling2D((2, 2), strides=1),
+    keras.layers.Conv2D(64, (3, 3), activation='relu', data_format='channels_first'),
+    keras.layers.MaxPooling2D(2, data_format='channels_first'),
     keras.layers.BatchNormalization(),
-    keras.layers.Conv2D(128, (3, 3), strides=1, activation='relu'),
-    keras.layers.MaxPooling2D((2, 2), strides=1),
+    keras.layers.Conv2D(128, (3, 3), activation='relu', data_format='channels_first'),
+    keras.layers.MaxPooling2D(2, data_format='channels_first'),
     keras.layers.BatchNormalization(),
     keras.layers.Flatten(),
     keras.layers.Dense(512, activation='relu'),
@@ -31,7 +31,7 @@ model = keras.Sequential([
     keras.layers.Dense(128, activation='relu'),
     keras.layers.Dense(30),
 ])
-
+print(model.summary())
 
 dataset_path = '../data_for_learning/training.csv'
 dataset = pd.read_csv(dataset_path)
