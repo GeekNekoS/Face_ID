@@ -31,7 +31,7 @@ dataset = pd.read_csv(dataset_path)
 batch_size = 32
 input_shape = (1, 96, 96)
 
-train, val = make_pipeline(dataset, 96, batch_size)
+train, val = make_pipeline(dataset, 96, batch_size, augmentation=True)
 
 inputA = Input(shape=input_shape, name='input_image')
 final = model_constructor(inputA)
