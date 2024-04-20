@@ -38,6 +38,9 @@ def preprocessing_X(X: pd.DataFrame, img_size: int) -> np.array:
         img = convertor(img, img_size)
         img_lst.append(img)
     img_array = np.array(img_lst, dtype='float32')
+
+    print(img_array.shape)
+
     return img_array
 
 
@@ -48,17 +51,3 @@ def preprocessing_y(y: pd.DataFrame) -> np.array:
         keypoints_lst.append(preprocessed_y)
     keypoints_array = np.array(keypoints_lst, dtype='float32')
     return keypoints_array
-
-
-def make_pipeline(dataset: pd.DataFrame, img_size: int, batch_size: int, augmentation: bool = False) -> tuple[tf.data.Dataset, tf.data.Dataset]:
-    img_array, keypoints_array = preprocessing(dataset, img_size)
-    if augmentation:
-        img_array, keypoints_array = data_augmentation(img_array, keypoints_array, img_size)
-    X_train, X_val, y_train, y_val = train_test_split(img_array, keypoints_array, test_size=0.3)
-    X_train = tf.data.Dataset.from_tensor_slices(X_train)
-    X_val = tf.data.Dataset.from_tensor_slices(X_val)
-    y_train = tf.data.Dataset.from_tensor_slices(y_train)
-    y_val = tf.data.Dataset.from_tensor_slices(y_val)
-    zipped_train = tf.data.Dataset.zip((X_train, y_train)).batch(batch_size)
-    zipped_test = tf.data.Dataset.zip((X_val, y_val)).batch(batch_size)
-    return zipped_train, zipped_test
