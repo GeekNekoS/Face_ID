@@ -17,7 +17,7 @@ def data_augmentation(img_array: np.array, keypoints_array: np.array, img_size: 
 
 
 def convertor(img: np.array, img_size) -> np.array:
-    img = np.reshape(img, (1, img_size, img_size))
+    img = np.reshape(img, (img_size, img_size, 1))
     img /= 255
     return img
 
