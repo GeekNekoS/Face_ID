@@ -41,5 +41,5 @@ print(model.summary())
 
 optimizer = Adam(learning_rate=0.001)
 model.compile(optimizer=optimizer, loss='mse', metrics=['mse'])
-my_callbacks = [keras.callbacks.ModelCheckpoint(filepath='model.{epoch:02d}-{mse:.2f}.keras', monitor='mse', verbose=1, save_best_only=True, mode='min')]
+my_callbacks = [keras.callbacks.ModelCheckpoint(filepath='modelCNN.keras', monitor='mse', verbose=1, save_best_only=True, mode='min')]
 history = model.fit(train, validation_data=val, epochs=1, verbose=1, callbacks=my_callbacks)
