@@ -51,7 +51,7 @@ model.compile(optimizer=optimizer, loss='mae', metrics=['mse'])
 
 
 EPOCHS = 1
-filepath = 'model.{epoch:02d}-{mse:.2f}.keras'
+filepath = 'model.CNN.v2.keras'
 model_checkpoint_callback = keras.callbacks.ModelCheckpoint(
     filepath=filepath,
     monitor='mse',
