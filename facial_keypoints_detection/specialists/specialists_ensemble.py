@@ -1,19 +1,17 @@
 import keras
 import pandas as pd
-from SimpleCNN import model_constructor
+from SimpleCNN import SimpleCNN
 import numpy as np
 from CustomGenerator import CustomGenerator
-from keras.src.saving.saving_api import save_model
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error
-import matplotlib.pyplot as plt
+from facial_keypoints_detection.draw.draw_result import draw
 
 
 pms = {
     'test_size': 0.2,
     'random_state': 0,
     'batch_size': 32,
-    'epochs': 2,
+    'epochs': 1,
 }
 stop_pms = {
     'monitor': 'val_loss',
@@ -21,7 +19,7 @@ stop_pms = {
     'restore_best_weights': True,
 }
 
-model_1 = model_constructor((96, 96, 1))
+model_1 = SimpleCNN((96, 96, 1))
 
 
 def load_data(csv_path, columns=None, dropna=True):
@@ -153,19 +151,7 @@ specialists_settings = [
          x_flip=[(0,2), (1,3), (4,4), (5,5), (6,6), (7,7)]),
 ]
 model_2 = Specialist(source_model=model_1, spec_settings=specialists_settings)
+draw(X_val, model_2)
 model_2.fit(csv_path=dataset_path, pms=pms, stop_pms=stop_pms)
-save_model(model_2, 'specialists_ensemble.keras')
 
 
-def test(X_val, y_val):
-    y_predval = model_2.predict(X_val)
-    y_predval = np.clip(y_predval, 0, 96)
-    for i in range(len(X_val)):
-        plt.imshow(X_val[i][:, :], cmap='gray')
-        for j in range(0, len(y_predval[i]), 2):
-            plt.scatter(y_predval[i][j], y_predval[i][j + 1], s=5, c='red', marker='o')
-        plt.show()
-    print(f'Final validation RMSE = {round(np.sqrt(mean_squared_error(y_val, y_predval)), 4)}')
-
-
-test(X_val, y_val)

@@ -1,9 +1,9 @@
 import pandas as pd
+import keras
 from keras import Model
 from keras.layers import Conv2D, MaxPooling2D, Flatten, Dropout, Dense, BatchNormalization, Input
 from keras.optimizers import Adam
 from facial_keypoints_detection.data_preprocessing.images_preprocessing import make_pipeline
-from facial_keypoints_detection.draw.draw_result import draw
 
 
 def model_constructor(inputA):
@@ -40,7 +40,6 @@ model = Model(inputs=[inputA], outputs=final)
 print(model.summary())
 
 optimizer = Adam(learning_rate=0.001)
-model.compile(optimizer=optimizer, loss='mse', metrics=['accuracy'])
-history = model.fit(train, validation_data=val, epochs=1, verbose=1)
-draw(val, model)
-model.save('facial_keypoints_detection(CNN, 3 epochs).keras')
+model.compile(optimizer=optimizer, loss='mse', metrics=['mse'])
+my_callbacks = [keras.callbacks.ModelCheckpoint(filepath='model.{epoch:02d}-{mse:.2f}.keras', monitor='mse', verbose=1, save_best_only=True, mode='min')]
+history = model.fit(train, validation_data=val, epochs=1, verbose=1, callbacks=my_callbacks)
