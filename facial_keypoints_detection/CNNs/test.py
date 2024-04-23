@@ -10,4 +10,5 @@ model = keras.models.load_model('modelCNN.keras')
 X_train, y_train = preprocessing(test_data, 96)
 results = model.predict(X_train)
 for i in range(len(results)):
+    print(y_train[i], results[i])
     draw(X_train[i], results[i])
