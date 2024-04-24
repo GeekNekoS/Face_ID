@@ -13,14 +13,15 @@
  - [Основные технологии / фрейморки](#basic_technologies)
  - [Полезная информация](#useful_information)
  - [Основные зависимости](#main_dependencies)
+ - [Исправление возможных ошибок](#errors_solving)
  - [Музычка для разработки](#nekos_music)
 <br /> <br />
 
 
 <a name="download_project"></a> 
 ## Установка проекта на ПК
-1. Откройте консоль, вбив в поисковике ПК: <code>cmd</code>
-2. Перейдите в директорию, куда хотите установить проект, пропишите следующую команду в консоль: <code>cd N:\Путь\до\папки\с\проектами</code>
+1. Откройте консоль, вбив в поисковике ПК: `cmd`
+2. Перейдите в директорию, куда хотите установить проект, пропишите следующую команду в консоль: `cd N:\Путь\до\папки\с\проектами`
 3. Введите следующую команду: git clone https://github.com/[ник]/Face_ID.git
 4. Откройте скачанный проект и можете приступать к разработке
 <br /> <br />
@@ -107,6 +108,17 @@
 
 3. For `Build a Deep Face Detection Model with Python and Tensorflow` guide:
 `pip install labelme tensorflow tensorflow-gpu opencv-python matplotlib albumentations opencv-contrib-python pillow`
+<br /> <br />
+
+
+<a name="errors_solving"></a>
+## Исправление возможных ошибок
+ - Если вы столкнулись с ошибкой ImportError: libGL.so.1: cannot open shared object file: No such file or directory в Ubuntu, вы можете решить проблему, выполнив следующие действия:
+1. Установите недостающую библиотеку libgl1-mesa-glx, запустив следующую команду в терминале: `sudo apt-get install libgl1-mesa-glx`
+2. Если необходимо, обновите кэш динамического связывания с помощью команды: `sudo ldconfig`
+3. Проверьте, что пакет libgl1-mesa-glx правильно установлен, выполните команду: `dpkg -l | grep libgl1-mesa-glx`
+   Если пакет правильно установлен, его статус будет отображаться в выводе команды
+4. Перезапустите ваше приложение или перезапустите систему, чтобы динамические библиотеки обновились.
 <br /> <br />
 
 
