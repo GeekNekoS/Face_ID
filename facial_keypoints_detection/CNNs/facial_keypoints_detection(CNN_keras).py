@@ -45,6 +45,6 @@ model = Model(inputs=[inputA], outputs=final)
 print(model.summary())
 
 optimizer = Adam(learning_rate=0.001)
-model.compile(optimizer=optimizer, loss='mae', metrics=[keras.losses.huber, 'log_cosh'])
-my_callbacks = [keras.callbacks.ModelCheckpoint(filepath='modelCNN(mae).tf', monitor='val_loss', verbose=1, mode='min', save_best_only=True)]
+model.compile(optimizer=optimizer, loss=keras.losses.mean_absolute_error, metrics=[keras.losses.huber, keras.losses.log_cosh])
+my_callbacks = [keras.callbacks.ModelCheckpoint(filepath='modelCNN(mae).h5', monitor='val_loss', verbose=1, mode='min', save_best_only=True)]
 history = model.fit(train, validation_data=val, epochs=15, verbose=1, callbacks=my_callbacks)
