@@ -21,7 +21,7 @@ class ImageLabelsJSON:
         self.info['coordinates'] = {}
         for label in self.labels:
             self.info['coordinates'][label] = None
-        with open(self.path, 'a') as json_file:
+        with open(self.path, 'w') as json_file:
             json.dump(self.info, json_file)
 
     def make_json_file_with_ready_values(self):
@@ -29,7 +29,7 @@ class ImageLabelsJSON:
         self.info['coordinates'] = {}
         for i in range(len(self.labels)):
             self.info['coordinates'][self.labels[i]] = self.values[i]
-        with open(self.path, 'a') as json_file:
+        with open(self.path, 'w') as json_file:
             json.dump(self.info, json_file)
 
     def change_coordinates(self, new_coordinates):
