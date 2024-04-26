@@ -1,9 +1,30 @@
 import cv2
+import matplotlib.pyplot as plt
+import numpy as np
 
 
-def face_alignment(face_img_path, face_parts_coordinates, base_face_parts_coordinates):
-    img = cv2.imread(face_img_path)
-    rows, columns, shape = img.shape
-    matrix = cv2.getAffineTransform(face_parts_coordinates, base_face_parts_coordinates)
-    result = cv2.warpAffine(img, matrix, (columns, rows))
-    return result
+class ImageTransformation:
+    def __init__(self, file_path: str):
+        self.path = file_path
+        self.image = plt.imread(self.path)
+        self.transformed_image = None
+
+    def face_alignment(self, face_parts_coordinates: np.ndarray[float, ...], base_face_parts_coordinates: np.ndarray[float, ...]=None):
+        """
+        make transformation using coordinates
+        face_parts_coordinates: np.ndarray[[l.eye], [nose], [r.eye]]
+        """
+        if base_face_parts_coordinates is None:
+            base_face_parts_coordinates = np.array([[27.2, 35.0], [50.0, 55.0], [70.4, 35.0]]).astype(np.float32)
+        rows, columns, shape = self.image.shape
+        matrix = cv2.getAffineTransform(face_parts_coordinates, base_face_parts_coordinates)
+        result = cv2.warpAffine(self.image, matrix, (columns, rows))
+        self.transformed_image = result
+
+    def draw_transformed_image(self):
+        plt.imshow(self.transformed_image)
+        plt.show()
+
+    def draw_start_image(self):
+        plt.imshow(self.image)
+        plt.show()
