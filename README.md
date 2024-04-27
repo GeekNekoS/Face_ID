@@ -1,7 +1,7 @@
 ![Python](https://img.shields.io/badge/-Python-05122A?style=flat&logo=python)&nbsp;
 
 ## *FACE ID*
-Программа, помогающая считывать буквенные данные с фотографий
+Библиотека с функциями определения схожести лиц
 <br /> <br />
 
 
