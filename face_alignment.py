@@ -4,9 +4,13 @@ import numpy as np
 
 
 class ImageTransformation:
-    def __init__(self, file_path: str):
-        self.path = file_path
-        self.image = plt.imread(self.path)
+    # def __init__(self, file_path: str):
+    #     self.path = file_path
+    #     self.image = plt.imread(self.path)
+    #     self.transformed_image = None
+
+    def __init__(self, image: np.ndarray[int, ...]):
+        self.image = image
         self.transformed_image = None
 
     def face_alignment(self, face_parts_coordinates: np.ndarray[float, ...], base_face_parts_coordinates: np.ndarray[float, ...]=None):
@@ -28,3 +32,12 @@ class ImageTransformation:
     def draw_start_image(self):
         plt.imshow(self.image)
         plt.show()
+
+
+# path3 = 'images/examples/resized_img_to_transformation.jpg'
+# coord = np.array([[35.0, 40.0], [53.0, 57.0], [64.0, 37.0]]).astype(np.float32)
+# example = ImageTransformation(path3)
+# example.face_alignment(coord)
+# example.draw_start_image()
+# example.draw_transformed_image()
+
