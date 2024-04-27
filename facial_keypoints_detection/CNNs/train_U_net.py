@@ -66,8 +66,8 @@ if __name__ == "__main__":
     image_w = 512
     num_classes = 11
     input_shape = (image_h, image_w, 3)
-    batch_size = 8
-    lr = 1e-4 ## 0.0001
+    batch_size = 2
+    lr = 1e-4  # 0.0001
     num_epochs = 100
     dataset_path = "../data_for_learning/LaPa"
     model_path = os.path.join("files", "model.h5")
