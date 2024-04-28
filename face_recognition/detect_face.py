@@ -1,5 +1,4 @@
 import cv2
-from settings import BASE_DIR
 
 
 def detect_face(image_path, output_path):

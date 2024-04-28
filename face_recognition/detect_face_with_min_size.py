@@ -36,7 +36,7 @@ def detect_face(image_path, output_path, min_size=(30, 30)):
 input_image_path = "data/nekos_images/test_5.jpg"
 
 output_image_path = "output.jpg"
-min_size = (65, 65)  # Установка минимального размера лица
+min_size = (30, 30)  # Установка минимального размера лица
 
 faces = detect_face(input_image_path, output_image_path, min_size)
 if len(faces) > 0:
