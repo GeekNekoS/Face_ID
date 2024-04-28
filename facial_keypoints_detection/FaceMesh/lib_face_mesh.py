@@ -108,6 +108,7 @@ def gram_schmidt(V):
 
 test_img = plt.imread('test_face.jpg')
 base_landmarks, base_blendshapes, base_matrixes = get_3d_facial_keypoints_large('base_face.png')
+new_base_matrixes = base_matrixes[0][1:, 1:]
 test_landmarks, test_blenshape, test_matrixes = get_3d_facial_keypoints_large('test_face.jpg')
 print(base_landmarks[0], base_blendshapes[0], base_matrixes[0], sep='\n_______\n')
 base_indexes = [4, 23, 253]
@@ -126,30 +127,33 @@ for i in base_indexes:
     test_coordinates.append([test_landmarks[0][i].x, base_landmarks[0][i].y, base_landmarks[0][i].z])
 base_coordinates = np.float32(base_coordinates)
 test_coordinates = np.float32(test_coordinates)
-transition_matrix = np.reshape(find_transition_matrix(base_coordinates, test_coordinates), (3, 3))
-print(transition_matrix)
-new_basis = gram_schmidt(test_coordinates)
-transposed_new_basis = transpose(new_basis)
-invariant_new_basis = inv(new_basis)
-invariant_transition_matrix = inv(transition_matrix)
-transposed_transition_matrix = transpose(transition_matrix)
-invariant_transposed_transition_matrix = inv(transposed_transition_matrix)
-transposed_invariant_transition_matrix = transpose(invariant_transition_matrix)
-plt.imshow(test_img)
-for i in range(len(all_test_coordinates)):
-    plt.scatter(all_test_coordinates[i][0] * test_img.shape[1], all_test_coordinates[i][1] * test_img.shape[0], c='red', marker='o')
-plt.show()
-print()
-print(all_test_coordinates)
-print(all_test_coordinates.shape)
-print('_'*70)
-for i in range(len(all_test_coordinates)):
-    all_test_coordinates[i] = matmul(all_test_coordinates[i], invariant_new_basis)
-plt.imshow(test_img)
-for i in range(len(base_indexes)):
-    plt.scatter(all_test_coordinates[base_indexes[i]][0] * test_img.shape[1], all_test_coordinates[base_indexes[i]][1] * test_img.shape[0], c='red', marker='o')
-    plt.scatter(all_base_coordinates[base_indexes[i]][0] * test_img.shape[1], all_base_coordinates[base_indexes[i]][1] * test_img.shape[0], c='green', marker='o')
-plt.show()
-print(all_test_coordinates)
-print(all_test_coordinates.shape)
+rows, columns = test_img.shape
+matrix = cv2.getAffineTransform(test_coordinates, base_coordinates)
+result = cv2.warpAffine(all_test_coordinates, matrix, (columns, rows))
+# transition_matrix = np.reshape(find_transition_matrix(base_coordinates, test_coordinates), (3, 3))
+# print(transition_matrix)
+# new_basis = gram_schmidt(test_coordinates)
+# transposed_new_basis = transpose(new_basis)
+# invariant_new_basis = inv(new_basis)
+# invariant_transition_matrix = inv(transition_matrix)
+# transposed_transition_matrix = transpose(transition_matrix)
+# invariant_transposed_transition_matrix = inv(transposed_transition_matrix)
+# transposed_invariant_transition_matrix = transpose(invariant_transition_matrix)
+# plt.imshow(test_img)
+# for i in range(len(all_test_coordinates)):
+#     plt.scatter(all_test_coordinates[i][0] * test_img.shape[1], all_test_coordinates[i][1] * test_img.shape[0], c='red', marker='o')
+# plt.show()
+# print()
+# print(all_test_coordinates)
+# print(all_test_coordinates.shape)
+# print('_'*70)
+# for i in range(len(all_test_coordinates)):
+#     all_test_coordinates[i] = matmul(all_test_coordinates[i], inv(new_base_matrixes))
+# plt.imshow(test_img)
+# for i in range(len(base_indexes)):
+#     plt.scatter(all_test_coordinates[base_indexes[i]][0] * test_img.shape[1], all_test_coordinates[base_indexes[i]][1] * test_img.shape[0], c='red', marker='o')
+#     plt.scatter(all_base_coordinates[base_indexes[i]][0] * test_img.shape[1], all_base_coordinates[base_indexes[i]][1] * test_img.shape[0], c='green', marker='o')
+# plt.show()
+# print(all_test_coordinates)
+# print(all_test_coordinates.shape)
 
