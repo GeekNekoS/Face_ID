@@ -3,7 +3,7 @@ import keras
 from keras import Model
 from keras.layers import Conv2D, MaxPooling2D, Flatten, Dropout, Dense, BatchNormalization, Input
 from keras.optimizers import Adam
-from facial_keypoints_detection.data_preprocessing.images_preprocessing import make_pipeline
+from facial_key_points_detection.data_preprocessing.images_preprocessing import make_pipeline
 
 
 def model_constructor(inputA):
@@ -37,7 +37,7 @@ dataset = pd.read_csv(dataset_path)
 batch_size = 32
 input_shape = (96, 96, 1)
 
-train, val = make_pipeline(dataset, 96, batch_size)
+train, val = make_pipeline(dataset, 96, 96, batch_size)
 
 inputA = Input(shape=input_shape, name='input_image')
 final = model_constructor(inputA)

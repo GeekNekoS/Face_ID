@@ -6,11 +6,11 @@ from sklearn.model_selection import train_test_split
 
 def convertor(img: np.ndarray, rows: int, columns: int) -> np.ndarray:
     """
-    Converts a one-dimensional array to a two-dimensional array.
+    Converts a one-dimensional array to a three-dimensional array.
     :param img: ndarray, one-dimensional array from image
     :param rows: int, rows number in image
     :param columns: int, column number in image
-    :return: ndarray, two-dimensional array
+    :return: ndarray, three-dimensional array
     """
     img = np.reshape(img, (rows, columns, 1))
     img /= 255
