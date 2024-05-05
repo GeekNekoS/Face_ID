@@ -1,6 +1,6 @@
 import mediapipe as mp
 from mediapipe.tasks import python
-base_options = python.BaseOptions(model_asset_path='facial_keypoints_detection/FaceMesh/face_landmarker.task')
+base_options = python.BaseOptions(model_asset_path='../facial_key_points_detection/FaceMesh/face_landmarker.task')
 from mediapipe.tasks.python import vision
 from mediapipe.tasks.python.vision import face_aligner
 
