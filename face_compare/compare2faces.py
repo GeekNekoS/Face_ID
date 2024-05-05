@@ -2,7 +2,6 @@ import cv2
 import numpy as np
 
 from tensorflow.keras.applications import resnet50
-from tensorflow.keras.preprocessing import image
 from tensorflow.keras.models import Model
 from numpy.linalg import norm
 
@@ -21,10 +20,8 @@ def cos_similarity(vec1, vec2):
     return dot_product / (norm_vec1 * norm_vec2)
 
 
-
 class Img2Vec(object):
     def __init__(self):
-        
         model = resnet50.ResNet50(weights='imagenet')
         layer_name = 'avg_pool'
         self.intermediate_layer_model = Model(inputs=model.input, 

@@ -6,6 +6,7 @@ from mediapipe.framework.formats import landmark_pb2
 from mediapipe.tasks import python
 base_options = python.BaseOptions(model_asset_path='face_landmarker.task')
 from mediapipe.tasks.python import vision
+from mediapipe.tasks.python.vision import face_aligner
 import matplotlib.pyplot as plt
 from sympy import *
 from sympy.solvers.solveset import linsolve
@@ -106,32 +107,66 @@ def gram_schmidt(V):
     return U
 
 
-test_img = plt.imread('test_face.jpg')
-base_landmarks, base_blendshapes, base_matrixes = get_3d_facial_keypoints_large('base_face.png')
-new_base_matrixes = base_matrixes[0][1:, 1:]
-test_landmarks, test_blenshape, test_matrixes = get_3d_facial_keypoints_large('test_face.jpg')
-print(base_landmarks[0], base_blendshapes[0], base_matrixes[0], sep='\n_______\n')
-base_indexes = [4, 23, 253]
-base_coordinates = []
-test_coordinates = []
-all_base_coordinates = []
-all_test_coordinates = []
-for i in range(len(base_landmarks[0])):
-    all_base_coordinates.append([base_landmarks[0][i].x, base_landmarks[0][i].y, base_landmarks[0][i].z])
-all_base_coordinates = np.float32(all_base_coordinates)
-for i in range(len(test_landmarks[0])):
-    all_test_coordinates.append([test_landmarks[0][i].x, test_landmarks[0][i].y, test_landmarks[0][i].z])
-all_test_coordinates = np.float32(all_test_coordinates)
-for i in base_indexes:
-    base_coordinates.append([base_landmarks[0][i].x, base_landmarks[0][i].y, base_landmarks[0][i].z])
-    test_coordinates.append([test_landmarks[0][i].x, base_landmarks[0][i].y, base_landmarks[0][i].z])
-base_coordinates = np.float32(base_coordinates)
-test_coordinates = np.float32(test_coordinates)
-rows, columns = test_img.shape
-matrix = cv2.getAffineTransform(test_coordinates, base_coordinates)
-result = cv2.warpAffine(all_test_coordinates, matrix, (columns, rows))
+# base_img = cv2.imread('base_face.png')
+# base_landmarks, base_blendshapes, base_matrixes = get_3d_facial_keypoints_large('base_face.png')
+# new_base_matrixes = base_matrixes[0][:-1, :-1]
+# invariant_new_base_matrixes = inv(base_matrixes[0])[:-1, :-1]
+#
+# print(base_landmarks[0], base_blendshapes[0], base_matrixes[0], sep='\n_______\n')
+#
+# test_img = plt.imread('test_face.jpg')
+# test_landmarks, test_blenshape, test_matrixes = get_3d_facial_keypoints_large('test_face.jpg')
+# new_test_matrixes = test_matrixes[0][:-1, :-1]
+# invariant_new_test_matrixes = inv(test_matrixes[0])[:-1, :-1]
+#
+# test2_img = plt.imread('test2_face.jpg')
+# test2_landmarks, test2_blenshape, test2_matrixes = get_3d_facial_keypoints_large('test2_face.jpg')
+# new_test2_matrixes = test2_matrixes[0][:-1, :-1]
+# invariant_new_test2_matrixes = inv(test2_matrixes[0])[:-1, :-1]
+#
+# test3_img = plt.imread('test3_face.jpg')
+# test3_landmarks, test3_blenshape, test3_matrixes = get_3d_facial_keypoints_large('test3_face.jpg')
+# new_test3_matrixes = test3_matrixes[0][:-1, :-1]
+# invariant_new_test3_matrixes = inv(test3_matrixes[0])[:-1, :-1]
+# transposed_new_test3_matrixes = transpose(test3_matrixes[0])[:-1, :-1]
+#
+# base_indexes = [4, 23, 253]
+#
+# base_coordinates = []
+# test_coordinates = []
+# all_base_coordinates = []
+# all_test_coordinates = []
+# all_test2_coordinates = []
+# all_test3_coordinates = []
+#
+# for i in range(len(base_landmarks[0])):
+#     all_base_coordinates.append([base_landmarks[0][i].x, base_landmarks[0][i].y, base_landmarks[0][i].z])
+# all_base_coordinates = np.float32(all_base_coordinates)
+#
+# for i in range(len(test_landmarks[0])):
+#     all_test_coordinates.append([test_landmarks[0][i].x, test_landmarks[0][i].y, test_landmarks[0][i].z])
+# all_test_coordinates = np.float32(all_test_coordinates)
+#
+# for i in range(len(test2_landmarks[0])):
+#     all_test2_coordinates.append([test2_landmarks[0][i].x, test2_landmarks[0][i].y, test2_landmarks[0][i].z])
+# all_test2_coordinates = np.float32(all_test2_coordinates)
+#
+# for i in range(len(test3_landmarks[0])):
+#     all_test3_coordinates.append([test3_landmarks[0][i].x, test3_landmarks[0][i].y, test3_landmarks[0][i].z])
+# all_test3_coordinates = np.float32(all_test3_coordinates)
+#
+# for i in base_indexes:
+#     base_coordinates.append([base_landmarks[0][i].x, base_landmarks[0][i].y, base_landmarks[0][i].z])
+#     test_coordinates.append([test_landmarks[0][i].x, base_landmarks[0][i].y, base_landmarks[0][i].z])
+# base_coordinates = np.float32(base_coordinates)
+# test_coordinates = np.float32(test_coordinates)
+#
 # transition_matrix = np.reshape(find_transition_matrix(base_coordinates, test_coordinates), (3, 3))
+# print()
 # print(transition_matrix)
+# print('-'*70)
+# print(test_matrixes[0])
+# print()
 # new_basis = gram_schmidt(test_coordinates)
 # transposed_new_basis = transpose(new_basis)
 # invariant_new_basis = inv(new_basis)
@@ -148,12 +183,12 @@ result = cv2.warpAffine(all_test_coordinates, matrix, (columns, rows))
 # print(all_test_coordinates.shape)
 # print('_'*70)
 # for i in range(len(all_test_coordinates)):
-#     all_test_coordinates[i] = matmul(all_test_coordinates[i], inv(new_base_matrixes))
+#     all_test_coordinates[i] = matmul(invariant_transition_matrix, all_test_coordinates[i])
+# # all_test_coordinates = cv2.warpAffine(all_test_coordinates, inv(new_base_matrixes), (3, 3))
 # plt.imshow(test_img)
-# for i in range(len(base_indexes)):
-#     plt.scatter(all_test_coordinates[base_indexes[i]][0] * test_img.shape[1], all_test_coordinates[base_indexes[i]][1] * test_img.shape[0], c='red', marker='o')
-#     plt.scatter(all_base_coordinates[base_indexes[i]][0] * test_img.shape[1], all_base_coordinates[base_indexes[i]][1] * test_img.shape[0], c='green', marker='o')
+# for i in range(len(all_test_coordinates)):
+#     plt.scatter(all_test_coordinates[i][0] * test_img.shape[1], all_test_coordinates[i][1] * test_img.shape[0], c='red', marker='o')
+#     # plt.scatter(all_base_coordinates[base_indexes[i]][0] * test_img.shape[1], all_base_coordinates[base_indexes[i]][1] * test_img.shape[0], c='green', marker='o')
 # plt.show()
 # print(all_test_coordinates)
 # print(all_test_coordinates.shape)
-

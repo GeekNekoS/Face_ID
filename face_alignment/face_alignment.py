@@ -4,11 +4,6 @@ import numpy as np
 
 
 class ImageTransformation:
-    # def __init__(self, file_path: str):
-    #     self.path = file_path
-    #     self.image = plt.imread(self.path)
-    #     self.transformed_image = None
-
     def __init__(self, image: np.ndarray[int, ...]):
         self.image = image
         self.transformed_image = None
@@ -26,8 +21,9 @@ class ImageTransformation:
         self.transformed_image = result
 
     def draw_transformed_image(self):
-        plt.imshow(self.transformed_image)
-        plt.show()
+        if self.transformed_image is not None:
+            plt.imshow(self.transformed_image)
+            plt.show()
 
     def draw_start_image(self):
         plt.imshow(self.image)
