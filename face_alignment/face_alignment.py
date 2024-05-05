@@ -4,36 +4,45 @@ import numpy as np
 
 
 class ImageTransformation:
-    def __init__(self, image: np.ndarray[int, ...]):
-        self.image = image
-        self.transformed_image = None
-
-    def face_alignment(self, face_parts_coordinates: np.ndarray[float, ...], base_face_parts_coordinates: np.ndarray[float, ...]=None):
+    """
+    Class for transformation image.
+    """
+    def __init__(self, image: np.ndarray[int], transformed_image: np.ndarray[int] | None = None) -> None:
         """
-        make transformation using coordinates
-        face_parts_coordinates: np.ndarray[[l.eye], [nose], [r.eye]]
+        :param image: ndarray, three-dimensional array from image
+        :param transformed_image: ndarray, three-dimensional array from aligned image [optional]
+        :return: None
+        """
+        self.image: np.ndarray[int] = image
+        self.transformed_image: np.ndarray[int] | None = transformed_image
+
+    def face_alignment(self, face_parts_coordinates: np.ndarray[float], base_face_parts_coordinates: np.ndarray[float] | None = None) -> None:
+        """
+        Make transformation using normalized coordinates.
+        :param face_parts_coordinates: np.ndarray[[left eye], [nose], [right eye]]
+        :param base_face_parts_coordinates: 3 base face key points coordinates
+        :return: None
         """
         if base_face_parts_coordinates is None:
-            base_face_parts_coordinates = np.array([[27.2, 35.0], [50.0, 55.0], [70.4, 35.0]]).astype(np.float32)
+            base_face_parts_coordinates = np.array([[0.28, 0.36], [0.52, 0.57], [0.73, 0.36]]).astype(np.float32)
         rows, columns, shape = self.image.shape
         matrix = cv2.getAffineTransform(face_parts_coordinates, base_face_parts_coordinates)
         result = cv2.warpAffine(self.image, matrix, (columns, rows))
         self.transformed_image = result
 
     def draw_transformed_image(self):
+        """
+        Draw aligned face.
+        :return: None
+        """
         if self.transformed_image is not None:
             plt.imshow(self.transformed_image)
             plt.show()
 
     def draw_start_image(self):
+        """
+        Draw base face.
+        :return: None
+        """
         plt.imshow(self.image)
         plt.show()
-
-
-# path3 = 'images/examples/resized_img_to_transformation.jpg'
-# coord = np.array([[35.0, 40.0], [53.0, 57.0], [64.0, 37.0]]).astype(np.float32)
-# example = ImageTransformation(path3)
-# example.face_alignment(coord)
-# example.draw_start_image()
-# example.draw_transformed_image()
-
