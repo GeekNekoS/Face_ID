@@ -6,7 +6,7 @@ class ImageLabelsJSON:
     """
     Сlass for working with a json file containing all the information about the facial key points and their coordinates.
     """
-    def __init__(self, file_path: str, image: np.ndarray[int, ...], labels: tuple[str, ...], image_name: str = 'img', values: np.ndarray | None = None):
+    def __init__(self, file_path: str, image: np.ndarray[int, ...], labels: tuple[str, ...], image_name: str = 'img', values: np.ndarray | None = None) -> None:
         """
         Automatically creates a new json file or overwrites an existing one
         :param file_path: str, path to json file
