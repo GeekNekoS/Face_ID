@@ -91,8 +91,8 @@
 <a name="useful_information"></a> 
 ## Полезная информация
  - [Object Detection with KerasCV](https://keras.io/guides/keras_cv/object_detection_keras_cv/)
+
  - [Build a Deep Face Detection Model with Python and Tensorflow](https://www.youtube.com/watch?v=N_W4EYtsa10)
- - [Пишем нейросеть на Python с нуля](https://proglib.io/p/pishem-neyroset-na-python-s-nulya-2020-10-07)
  - [Распознавание текста с изображения на Python | EasyOCR vs Tesseract | Компьютерное зрение](https://www.youtube.com/watch?v=H_nXZSM4WiU)
  - [Python + OpenCV + Keras: делаем распознавалку текста за полчаса](https://habr.com/ru/articles/466565/)
 <br /> <br />
