@@ -4,8 +4,8 @@ import numpy as np
 from mediapipe import solutions
 from mediapipe.framework.formats import landmark_pb2
 from mediapipe.tasks import python
-base_options = python.BaseOptions(model_asset_path='face_landmarker.task')
 from mediapipe.tasks.python import vision
+base_options = python.BaseOptions(model_asset_path='face_landmarker.task')
 
 
 def draw_landmarks_on_image(rgb_image: np.ndarray, detection_result: mediapipe.tasks.python.vision.FaceLandmarkerResult) -> None:
