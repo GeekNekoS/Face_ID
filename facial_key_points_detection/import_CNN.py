@@ -8,7 +8,8 @@ load_dotenv('../yandex.env')
 def import_CNN(save_model: bool = False):
     """
     Imports model for facial key points detection from Yandex disk
-    :return: None
+    :param save_model: bool, save file with model in project or not
+    :return: CNN model
     """
     headers = {'Authorization': f'OAuth {os.getenv("YANDEX_DISK_API_TOKEN")}'}
     url = os.getenv('YANDEX_DISK_MODEL')
