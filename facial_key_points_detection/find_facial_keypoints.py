@@ -1,5 +1,5 @@
 import numpy as np
-from import_CNN import import_CNN
+from import_facial_key_points_model import import_CNN
 from dotenv import load_dotenv
 load_dotenv('../yandex.env')
 
