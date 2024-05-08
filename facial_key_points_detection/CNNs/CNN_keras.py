@@ -1,9 +1,5 @@
-import pandas as pd
-import keras
 from keras import Model
 from keras.layers import Conv2D, MaxPooling2D, Flatten, Dropout, Dense, BatchNormalization, Input
-from keras.optimizers import Adam
-from facial_key_points_detection.data_preprocessing.images_preprocessing import make_pipeline
 
 
 def input_base(input_shape, name='input_image'):
