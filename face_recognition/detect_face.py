@@ -33,15 +33,16 @@ def detect_face(image_path, output_path, min_size=(30, 30)):
 
 # Пример использования
 # input_image_path = "data/collected_images/6976fd7e-ee5f-11ee-a961-f42679e0f8f2.jpg"
-input_image_path = "data/nekos_images/test_5.jpg"
+if __name__ == '__main__':
+    input_image_path = "data/nekos_images/test_5.jpg"
 
-output_image_path = "output.jpg"
-min_size = (30, 30)  # Установка минимального размера лица
+    output_image_path = "output.jpg"
+    min_size = (30, 30)  # Установка минимального размера лица
 
-faces = detect_face(input_image_path, output_image_path, min_size)
-if len(faces) > 0:
-    print("Лица обнаружены:")
-    for i, (x, y, w, h) in enumerate(faces, 1):
-        print(f"Лицо {i}: координаты ({x}, {y}), ширина {w}, высота {h}")
-else:
-    print("Лица не обнаружены на изображении.")
+    faces = detect_face(input_image_path, output_image_path, min_size)
+    if len(faces) > 0:
+        print("Лица обнаружены:")
+        for i, (x, y, w, h) in enumerate(faces, 1):
+            print(f"Лицо {i}: координаты ({x}, {y}), ширина {w}, высота {h}")
+    else:
+        print("Лица не обнаружены на изображении.")
