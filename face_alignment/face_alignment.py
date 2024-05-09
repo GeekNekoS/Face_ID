@@ -7,16 +7,16 @@ class ImageTransformation:
     """
     Class for transformation image.
     """
-    def __init__(self, image: np.ndarray[int], transformed_image: np.ndarray[int] | None = None) -> None:
+    def __init__(self, image: np.ndarray, transformed_image: np.ndarray | None = None) -> None:
         """
         :param image: ndarray, three-dimensional array from image
         :param transformed_image: ndarray, three-dimensional array from aligned image [optional]
         :return: None
         """
-        self.image: np.ndarray[int] = image
-        self.transformed_image: np.ndarray[int] | None = transformed_image
+        self.image: np.ndarray = image
+        self.transformed_image: np.ndarray | None = transformed_image
 
-    def face_alignment(self, face_parts_coordinates: np.ndarray[float], base_face_parts_coordinates: np.ndarray[float] | None = None) -> None:
+    def align_face(self, face_parts_coordinates: np.ndarray, base_face_parts_coordinates: np.ndarray | None = None) -> None:
         """
         Make transformation using normalized coordinates.
         :param face_parts_coordinates: np.ndarray[[left eye], [nose], [right eye]]

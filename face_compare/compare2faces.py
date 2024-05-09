@@ -1,17 +1,9 @@
 import cv2
 import numpy as np
-
 from tensorflow.keras.applications import resnet50
 from tensorflow.keras.models import Model
 from numpy.linalg import norm
 
-
-# def find_faces_distance(face1_encoding: np.array, face2_encoding: np.array) -> float:
-#     return np.linalg.norm(face1_encoding - face2_encoding)
-
-
-# def compare2faces(face1_encoding: np.array, face2_encoding: np.array, tolerance: float = 0.6) -> bool:
-#     return find_faces_distance(face1_encoding, face2_encoding) <= tolerance
 
 def cos_similarity(vec1, vec2):
     dot_product = np.dot(vec1, vec2)
@@ -41,10 +33,3 @@ class Img2Vec(object):
         intermediate_output = self.intermediate_layer_model.predict(x)
         
         return intermediate_output[0]
-    
-    
-# img2vec = Img2Vec()
-# cat1_vec = np.array(img2vec.get_vec('output.jpg') )
-# cat2_vec = np.array(img2vec.get_vec('output2.jpg') )
-
-# print(cos_similarity(cat1_vec, cat2_vec))
