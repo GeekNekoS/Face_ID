@@ -12,24 +12,20 @@ def cos_similarity(vec1, vec2):
     return dot_product / (norm_vec1 * norm_vec2)
 
 
-class Img2Vec(object):
+class Img2VecModel(object):
     def __init__(self):
         model = resnet50.ResNet50(weights='imagenet')
         layer_name = 'avg_pool'
         self.intermediate_layer_model = Model(inputs=model.input, 
                                               outputs=model.get_layer(layer_name).output)
         
-    def get_vec(self, image_path):
+    def get_vec(self, image):
         """ Gets a vector embedding from an image.
-        :param image_path: path to image on filesystem
+        :param image: array from image
         :returns: numpy ndarray
         """
-        image = cv2.imread(image_path)
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)  
-        cv2.imshow(gray)
-        x = image.img_to_array(gray)
-        x = np.expand_dims(x, axis=0)
-        x = resnet50.preprocess_input(x)
-        intermediate_output = self.intermediate_layer_model.predict(x)
-        
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        gray = np.expand_dims(gray, axis=0)
+        preprocessed_input = resnet50.preprocess_input(gray)
+        intermediate_output = self.intermediate_layer_model.predict(preprocessed_input)
         return intermediate_output[0]
