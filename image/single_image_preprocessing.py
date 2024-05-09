@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 
-def resize_image(image, new_size: tuple[int, int]) -> np.ndarray:
+def resize_image(image: np.ndarray, new_size: tuple[int, int]) -> np.ndarray:
     """
     Resize image.
     :param image: ndarray, array from image
@@ -18,7 +18,7 @@ def preprocess_image(image: np.ndarray, new_size: tuple[int, int], convert_color
     Converts image for neural networks input.
     :param image: ndarray, array from image
     :param new_size: tuple, new image size
-    :param convert_color_options: int, color converts option
+    :param convert_color_options: int, color converts option [optional]
     :return: ndarray, array from converted image
     """
     resized_image = resize_image(image, new_size)

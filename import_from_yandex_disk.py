@@ -1,18 +1,17 @@
 import requests
-import os
-from dotenv import load_dotenv
-load_dotenv('yandex.env')
 
 
-def import_from_yadisk(yadisk_path: str, path: str) -> None:
+def import_from_yadisk(yadisk_url_download: str, yadisk_token: str, yadisk_path: str, path: str) -> None:
     """
     Download file from yandex disk
+    :param yadisk_url_download: str, url for download file from yandex disk
+    :param yadisk_token: str, yandex disk api token
     :param yadisk_path: str, file path in yandex disk
     :param path: str, file path in project
     :return: None
     """
-    headers = {'Authorization': f'OAuth {os.getenv("YANDEX_DISK_API_TOKEN")}'}
-    url = os.getenv('YANDEX_DISK_DOWNLOAD') + yadisk_path
+    headers = {'Authorization': f'OAuth {yadisk_token}'}
+    url = yadisk_url_download + yadisk_path
     response = requests.get(url, headers=headers)
     file_url = response.json()['href']
     file_response = requests.get(file_url)

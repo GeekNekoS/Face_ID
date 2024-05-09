@@ -6,7 +6,7 @@ custom_objects = {'categorical_crossentropy': keras.losses.categorical_crossentr
 
 def find_segments(image: np.ndarray) -> np.ndarray:
     """
-    Find 11 face segments.
+    Find 11 face segments (background, skin, left eyebrow, right eyebrow, left eye, right eye, nose, upper lip, inner mouth, lower lip, hair).
     :param image: ndarray, array from image
     :return: ndarray, array from segments
     """
