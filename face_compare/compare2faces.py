@@ -13,14 +13,21 @@ def cos_similarity(vec1, vec2):
 
 
 class Img2VecModel(object):
+    """
+    Model class for extracting a vector of facial features.
+    """
     def __init__(self):
+        """
+        Creates model for extracting a vector of facial features.
+        """
         model = resnet50.ResNet50(weights='imagenet')
         layer_name = 'avg_pool'
         self.intermediate_layer_model = Model(inputs=model.input, 
                                               outputs=model.get_layer(layer_name).output)
         
     def get_vec(self, image):
-        """ Gets a vector embedding from an image.
+        """
+        Gets a vector embedding from an image.
         :param image: array from image
         :returns: numpy ndarray
         """
