@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 load_dotenv('../yandex.env')
 
 
-def import_U_net(custom_objects: dict, yadisk_url_download: str = os.getenv('YANDEX_DISK_DOWNLOAD'), yadisk_token: str = os.getenv('YANDEX_DISK_API_TOKEN'), yadisk_path: str = os.getenv('FACE_SEGMENTATION_MODEL_PATH'), path: str = 'face_segmentation_model.h5', save_model: bool = False):
+def import_model(custom_objects: dict, yadisk_url_download: str = os.getenv('YANDEX_DISK_DOWNLOAD'), yadisk_token: str = os.getenv('YANDEX_DISK_API_TOKEN'), yadisk_path: str = os.getenv('FACE_SEGMENTATION_MODEL_PATH'), path: str = 'face_segmentation_model.h5', save_model: bool = False):
     """
     Import U_net model.
     :param custom_objects: dict, custom objects for load models
