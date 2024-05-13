@@ -1,7 +1,6 @@
 import numpy as np
-import keras
-from import_face_segmentation_model import import_U_net
-custom_objects = {'categorical_crossentropy': keras.losses.categorical_crossentropy}
+from import_U_net import import_model
+from face_segmentation.utils.settings import U_NET_CUSTOM_OBJECTS
 
 
 def find_segments(image: np.ndarray) -> np.ndarray:
@@ -10,6 +9,6 @@ def find_segments(image: np.ndarray) -> np.ndarray:
     :param image: ndarray, array from image
     :return: ndarray, array from segments
     """
-    model = import_U_net(custom_objects)
+    model = import_model(U_NET_CUSTOM_OBJECTS)
     results = model.predict(image)
     return results
