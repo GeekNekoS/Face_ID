@@ -1,7 +1,7 @@
 import requests
 
 
-def import_from_yadisk(yadisk_url_download: str, yadisk_token: str, yadisk_path: str, path: str) -> None:
+def import_file(yadisk_url_download: str, yadisk_token: str, yadisk_path: str, path: str) -> None:
     """
     Download file from yandex disk
     :param yadisk_url_download: str, url for download file from yandex disk
