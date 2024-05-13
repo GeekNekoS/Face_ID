@@ -15,5 +15,5 @@ def find_facial_key_points(image: np.ndarray, model_path: str = None) -> np.ndar
         model = import_model(FACIAL_KEY_POINTS_MODEL_CUSTOM_OBJECTS)
     else:
         model = load_model(model_path, FACIAL_KEY_POINTS_MODEL_CUSTOM_OBJECTS)
-    result = model.predict(image)
+    result = np.array(model.predict(image))
     return result / 96

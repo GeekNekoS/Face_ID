@@ -3,12 +3,12 @@ import keras
 from yandex_disk.import_file_from_yandex_disk import import_file
 
 
-def import_model_from_yandex_disk(yadisk_url_download: str, yadisk_token: str, yadisk_path: str, path: str, custom_objects: dict = None, save_model: bool = False):
+def import_model_from_yandex_disk(yadisk_url_download: str, yadisk_token: str, yadisk_path: str, path: str, save_model: bool, custom_objects: dict = None):
     """
     Imports model from Yandex disk.
     :param yadisk_url_download: str, url for download file from yandex disk
     :param yadisk_token: str, yandex disk api token
-    :param save_model: bool, save file with model in project or not [optional]
+    :param save_model: bool, save file with model in project or not
     :param yadisk_path: str, file path in yandex disk
     :param custom_objects: dict, custom objects for load models [optional]
     :param path: str, file path in project
