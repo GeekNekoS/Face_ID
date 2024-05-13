@@ -1,6 +1,7 @@
 from find_facial_key_points import find_facial_key_points
 import cv2
 from utils.single_image_preprocessing import convert_image
+import matplotlib.pyplot as plt
 
 
 def png_test(img_path: str):
@@ -17,5 +18,10 @@ def jpg_test(img_path: str):
     return result
 
 
-png_test('../test_data/test.png')
-jpg_test('../test_data/test.jpg')
+dots = jpg_test('../test_data/test.jpg')
+print(dots)
+image = plt.imread('../test_data/test.jpg')
+plt.imshow(image)
+for i in range(0, len(dots[0]), 2):
+    plt.scatter(dots[0][i], dots[0][i+1])
+plt.show()

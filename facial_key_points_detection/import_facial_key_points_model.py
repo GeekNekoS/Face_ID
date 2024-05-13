@@ -1,5 +1,5 @@
 import os
-from import_model import import_model_from_yadisk
+from yandex_disk.import_model_from_yandex_disk import import_model_from_yandex_disk
 from dotenv import load_dotenv
 load_dotenv('../yandex.env')
 
@@ -15,5 +15,5 @@ def import_model(custom_objects: dict, yadisk_url_download: str = os.getenv('YAN
     :param path: str, file path in project [optional]
     :return: CNN model
     """
-    model = import_model_from_yadisk(yadisk_url_download, yadisk_token, yadisk_path, path, custom_objects, save_model)
+    model = import_model_from_yandex_disk(yadisk_url_download, yadisk_token, yadisk_path, path, save_model, custom_objects)
     return model
