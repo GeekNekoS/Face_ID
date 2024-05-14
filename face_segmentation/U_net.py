@@ -1,17 +1,39 @@
 import keras.models
-from tensorflow.keras.layers import Conv2D, BatchNormalization, Activation, MaxPool2D, Conv2DTranspose, Concatenate, Input
+from keras.layers import Conv2D, BatchNormalization, Activation, MaxPool2D, Conv2DTranspose, Concatenate, Input
 
 
-class ConvBlock(keras.layers.Layer):
+class ConvBlock(keras.Layer):
     def __init__(self, n_filters):
         super().__init__()
-        self.n_filters = n_filters
+        self.units = n_filters
         self.conv1 = Conv2D(n_filters, 3, padding='same')
         self.batch_norm1 = BatchNormalization()
         self.act1 = Activation('relu')
         self.conv2 = Conv2D(n_filters, 3, padding='same')
         self.batch_norm2 = BatchNormalization()
         self.act2 = Activation('relu')
+
+    def compute_output_shape(self, input_shape):
+        output_shape = self.conv1.compute_output_shape(input_shape)
+        output_shape = self.batch_norm1.compute_output_shape(output_shape)
+        output_shape = self.act1.compute_output_shape(output_shape)
+        output_shape = self.conv2.compute_output_shape(output_shape)
+        output_shape = self.batch_norm2.compute_output_shape(output_shape)
+        output_shape = self.act2.compute_output_shape(output_shape)
+        return output_shape
+
+    def build(self, input_shape):
+        self.conv1.build(input_shape)
+        output_shape = self.conv1.compute_output_shape(input_shape)
+        self.batch_norm1.build(output_shape)
+        output_shape = self.batch_norm1.compute_output_shape(output_shape)
+        self.act1.build(output_shape)
+        output_shape = self.act1.compute_output_shape(output_shape)
+        self.conv2.build(output_shape)
+        output_shape = self.conv2.compute_output_shape(output_shape)
+        self.batch_norm2.build(output_shape)
+        output_shape = self.batch_norm2.compute_output_shape(output_shape)
+        self.act2.build(output_shape)
 
     def call(self, inputs):
         x = self.conv1(inputs)
@@ -22,47 +44,61 @@ class ConvBlock(keras.layers.Layer):
         x = self.act2(x)
         return x
 
-    def get_config(self):
-        return {'n_filters': self.n_filters, 'conv1': self.conv1, 'batch_norm1': self.batch_norm1, 'act1': self.act1, 'conv2': self.conv2, 'batch_norm2': self.batch_norm2, 'act2': self.act2}
 
-
-class EncoderBlock(keras.layers.Layer):
+class EncoderBlock(keras.Layer):
     def __init__(self, n_filters):
         super().__init__()
-        self.n_filters = n_filters
+        self.units = n_filters
         self.conv_block = ConvBlock(n_filters)
         self.max_pool = MaxPool2D((2, 2))
+
+    def compute_output_shape(self, input_shape):
+        output_shape1 = self.conv_block.compute_output_shape(input_shape)
+        output_shape2 = self.max_pool.compute_output_shape(output_shape1)
+        return output_shape1, output_shape2
+
+    def build(self, input_shape):
+        self.conv_block.build(input_shape)
+        output_shape = self.conv_block.compute_output_shape(input_shape)
+        self.max_pool.build(output_shape)
 
     def call(self, inputs):
         x = self.conv_block(inputs)
         p = self.max_pool(x)
         return x, p
 
-    def get_config(self):
-        return {'n_filters': self.n_filters, 'conv_block': self.conv_block, 'max_pool': self.max_pool}
 
-
-class DecoderBlock(keras.layers.Layer):
+class DecoderBlock(keras.Layer):
     def __init__(self, n_filters):
         super().__init__()
-        self.n_filters = n_filters
+        self.units = n_filters
         self.conv_tr = Conv2DTranspose(n_filters, (2, 2), 2, 'same')
         self.concat = Concatenate()
         self.conv_block = ConvBlock(n_filters)
 
-    def call(self, inputs, skip):
-        x = self.conv_tr(inputs)
-        x = self.concat([x, skip])
+    def compute_output_shape(self, input_shapes):
+        output_shape = self.conv_tr.compute_output_shape(input_shapes[0])
+        output_shape = self.concat.compute_output_shape((output_shape, input_shapes[1]))
+        output_shape = self.conv_block.compute_output_shape(output_shape)
+        return output_shape
+
+    def build(self, input_shapes):
+        self.conv_tr.build(input_shapes[0])
+        output_shape = self.conv_tr.compute_output_shape(input_shapes[0])
+        self.concat.build((output_shape, input_shapes[1]))
+        output_shape = self.concat.compute_output_shape((output_shape, input_shapes[1]))
+        self.conv_block.build(output_shape)
+
+    def call(self, inputs):
+        x = self.conv_tr(inputs[0])
+        x = self.concat([x, inputs[1]])
         x = self.conv_block(x)
         return x
 
-    def get_config(self):
-        return {'n_filters': self.n_filters, 'conv_tr': self.conv_tr, 'concat': self.concat, 'conv_block': self.conv_block}
 
-
-class Unet(keras.models.Model):
-    def __init__(self, input_shape, n_classes):
-        super().__init__()
+class Unet(keras.Model):
+    def __init__(self, input_shape, n_classes, **kwargs):
+        super(Unet, self).__init__(**kwargs)
         self.input_shape = input_shape
         self.n_classes = n_classes
         self.inputs = Input(input_shape)
@@ -76,12 +112,13 @@ class Unet(keras.models.Model):
         self.decoder_block3 = DecoderBlock(128)
         self.decoder_block4 = DecoderBlock(64)
         self.outputs = Conv2D(n_classes, 1, padding='same', activation='softmax')
+        self.out = self.call(self.inputs)
+        super(Unet, self).__init__(inputs=self.inputs, outputs=self.out, **kwargs)
 
     def call(self, inputs):
-        x = self.inputs(inputs)
-        s1, p1 = self.encoder_block1(x)
+        s1, p1 = self.encoder_block1(inputs)
         s2, p2 = self.encoder_block2(p1)
-        s3, p3 = self.decoder_block3(p2)
+        s3, p3 = self.encoder_block3(p2)
         s4, p4 = self.encoder_block4(p3)
         b1 = self.conv_block(p4)
         d1 = self.decoder_block1([b1, s4])
@@ -90,9 +127,6 @@ class Unet(keras.models.Model):
         d4 = self.decoder_block4([d3, s1])
         output = self.outputs(d4)
         return output
-
-    def get_config(self):
-        return {'input_shape': self.input_shape, 'n_classes': self.n_classes, 'inputs': self.inputs, 'encoder_block1': self.encoder_block1, 'encoder_block2': self.encoder_block2, 'encoder_block3': self.encoder_block3, 'encoder_block4': self.encoder_block4, 'conv_block': self.conv_block, 'decoder_block1': self.decoder_block1, 'decoder_block2': self.decoder_block2, 'decoder_block3': self.decoder_block3, 'decoder_block4': self.decoder_block4, 'outputs': self.outputs}
 
 
 if __name__ == '__main__':
