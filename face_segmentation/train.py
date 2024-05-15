@@ -2,7 +2,6 @@ import os
 
 import numpy as np
 import cv2
-from glob import glob
 import tensorflow as tf
 from keras.callbacks import ModelCheckpoint, ReduceLROnPlateau, EarlyStopping, CSVLogger
 
@@ -122,4 +121,3 @@ if __name__ == "__main__":
               callbacks=callbacks,
               verbose=1
     )
-    print(True)
