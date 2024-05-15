@@ -1,134 +1,49 @@
-import keras.models
-from keras.layers import Conv2D, BatchNormalization, Activation, MaxPool2D, Conv2DTranspose, Concatenate, Input
+from tensorflow.keras.models import *
+from tensorflow.keras.layers import *
 
 
-class ConvBlock(keras.Layer):
-    def __init__(self, n_filters):
-        super().__init__()
-        self.units = n_filters
-        self.conv1 = Conv2D(n_filters, 3, padding='same')
-        self.batch_norm1 = BatchNormalization()
-        self.act1 = Activation('relu')
-        self.conv2 = Conv2D(n_filters, 3, padding='same')
-        self.batch_norm2 = BatchNormalization()
-        self.act2 = Activation('relu')
-
-    def compute_output_shape(self, input_shape):
-        output_shape = self.conv1.compute_output_shape(input_shape)
-        output_shape = self.batch_norm1.compute_output_shape(output_shape)
-        output_shape = self.act1.compute_output_shape(output_shape)
-        output_shape = self.conv2.compute_output_shape(output_shape)
-        output_shape = self.batch_norm2.compute_output_shape(output_shape)
-        output_shape = self.act2.compute_output_shape(output_shape)
-        return output_shape
-
-    def build(self, input_shape):
-        self.conv1.build(input_shape)
-        output_shape = self.conv1.compute_output_shape(input_shape)
-        self.batch_norm1.build(output_shape)
-        output_shape = self.batch_norm1.compute_output_shape(output_shape)
-        self.act1.build(output_shape)
-        output_shape = self.act1.compute_output_shape(output_shape)
-        self.conv2.build(output_shape)
-        output_shape = self.conv2.compute_output_shape(output_shape)
-        self.batch_norm2.build(output_shape)
-        output_shape = self.batch_norm2.compute_output_shape(output_shape)
-        self.act2.build(output_shape)
-
-    def call(self, inputs):
-        x = self.conv1(inputs)
-        x = self.batch_norm1(x)
-        x = self.act1(x)
-        x = self.conv2(x)
-        x = self.batch_norm2(x)
-        x = self.act2(x)
-        return x
-
-
-class EncoderBlock(keras.Layer):
-    def __init__(self, n_filters):
-        super().__init__()
-        self.units = n_filters
-        self.conv_block = ConvBlock(n_filters)
-        self.max_pool = MaxPool2D((2, 2))
-
-    def compute_output_shape(self, input_shape):
-        output_shape1 = self.conv_block.compute_output_shape(input_shape)
-        output_shape2 = self.max_pool.compute_output_shape(output_shape1)
-        return output_shape1, output_shape2
-
-    def build(self, input_shape):
-        self.conv_block.build(input_shape)
-        output_shape = self.conv_block.compute_output_shape(input_shape)
-        self.max_pool.build(output_shape)
-
-    def call(self, inputs):
-        x = self.conv_block(inputs)
-        p = self.max_pool(x)
-        return x, p
-
-
-class DecoderBlock(keras.Layer):
-    def __init__(self, n_filters):
-        super().__init__()
-        self.units = n_filters
-        self.conv_tr = Conv2DTranspose(n_filters, (2, 2), 2, 'same')
-        self.concat = Concatenate()
-        self.conv_block = ConvBlock(n_filters)
-
-    def compute_output_shape(self, input_shapes):
-        output_shape = self.conv_tr.compute_output_shape(input_shapes[0])
-        output_shape = self.concat.compute_output_shape((output_shape, input_shapes[1]))
-        output_shape = self.conv_block.compute_output_shape(output_shape)
-        return output_shape
-
-    def build(self, input_shapes):
-        self.conv_tr.build(input_shapes[0])
-        output_shape = self.conv_tr.compute_output_shape(input_shapes[0])
-        self.concat.build((output_shape, input_shapes[1]))
-        output_shape = self.concat.compute_output_shape((output_shape, input_shapes[1]))
-        self.conv_block.build(output_shape)
-
-    def call(self, inputs):
-        x = self.conv_tr(inputs[0])
-        x = self.concat([x, inputs[1]])
-        x = self.conv_block(x)
-        return x
-
-
-class Unet(keras.Model):
-    def __init__(self, input_shape, n_classes, **kwargs):
-        super(Unet, self).__init__(**kwargs)
-        self.input_shape = input_shape
-        self.n_classes = n_classes
-        self.inputs = Input(input_shape)
-        self.encoder_block1 = EncoderBlock(64)
-        self.encoder_block2 = EncoderBlock(128)
-        self.encoder_block3 = EncoderBlock(256)
-        self.encoder_block4 = EncoderBlock(512)
-        self.conv_block = ConvBlock(1024)
-        self.decoder_block1 = DecoderBlock(512)
-        self.decoder_block2 = DecoderBlock(256)
-        self.decoder_block3 = DecoderBlock(128)
-        self.decoder_block4 = DecoderBlock(64)
-        self.outputs = Conv2D(n_classes, 1, padding='same', activation='softmax')
-        self.out = self.call(self.inputs)
-        super(Unet, self).__init__(inputs=self.inputs, outputs=self.out, **kwargs)
-
-    def call(self, inputs):
-        s1, p1 = self.encoder_block1(inputs)
-        s2, p2 = self.encoder_block2(p1)
-        s3, p3 = self.encoder_block3(p2)
-        s4, p4 = self.encoder_block4(p3)
-        b1 = self.conv_block(p4)
-        d1 = self.decoder_block1([b1, s4])
-        d2 = self.decoder_block2([d1, s3])
-        d3 = self.decoder_block3([d2, s2])
-        d4 = self.decoder_block4([d3, s1])
-        output = self.outputs(d4)
-        return output
+def unet(input_shape, filters_number, pretrained_weights=None):
+    inputs = Input(input_shape)
+    conv1 = Conv2D(64, 3, activation='relu', padding='same', kernel_initializer='he_normal')(inputs)
+    conv1 = Conv2D(64, 3, activation='relu', padding='same', kernel_initializer='he_normal')(conv1)
+    pool1 = MaxPooling2D(pool_size=(2, 2))(conv1)
+    conv2 = Conv2D(128, 3, activation='relu', padding='same', kernel_initializer='he_normal')(pool1)
+    conv2 = Conv2D(128, 3, activation='relu', padding='same', kernel_initializer='he_normal')(conv2)
+    pool2 = MaxPooling2D(pool_size=(2, 2))(conv2)
+    conv3 = Conv2D(256, 3, activation='relu', padding='same', kernel_initializer='he_normal')(pool2)
+    conv3 = Conv2D(256, 3, activation='relu', padding='same', kernel_initializer='he_normal')(conv3)
+    pool3 = MaxPooling2D(pool_size=(2, 2))(conv3)
+    conv4 = Conv2D(512, 3, activation='relu', padding='same', kernel_initializer='he_normal')(pool3)
+    conv4 = Conv2D(512, 3, activation='relu', padding='same', kernel_initializer='he_normal')(conv4)
+    drop4 = Dropout(0.5)(conv4)
+    pool4 = MaxPooling2D(pool_size=(2, 2))(drop4)
+    conv5 = Conv2D(1024, 3, activation='relu', padding='same', kernel_initializer='he_normal')(pool4)
+    conv5 = Conv2D(1024, 3, activation='relu', padding='same', kernel_initializer='he_normal')(conv5)
+    drop5 = Dropout(0.5)(conv5)
+    up6 = Conv2D(512, 2, activation='relu', padding='same', kernel_initializer='he_normal')(UpSampling2D(size=(2, 2))(drop5))
+    merge6 = concatenate([drop4, up6], axis=3)
+    conv6 = Conv2D(512, 3, activation='relu', padding='same', kernel_initializer='he_normal')(merge6)
+    conv6 = Conv2D(512, 3, activation='relu', padding='same', kernel_initializer='he_normal')(conv6)
+    up7 = Conv2D(256, 2, activation='relu', padding='same', kernel_initializer='he_normal')(UpSampling2D(size=(2, 2))(conv6))
+    merge7 = concatenate([conv3, up7], axis=3)
+    conv7 = Conv2D(256, 3, activation='relu', padding='same', kernel_initializer='he_normal')(merge7)
+    conv7 = Conv2D(256, 3, activation='relu', padding='same', kernel_initializer='he_normal')(conv7)
+    up8 = Conv2D(128, 2, activation='relu', padding='same', kernel_initializer='he_normal')(UpSampling2D(size=(2, 2))(conv7))
+    merge8 = concatenate([conv2, up8], axis=3)
+    conv8 = Conv2D(128, 3, activation='relu', padding='same', kernel_initializer='he_normal')(merge8)
+    conv8 = Conv2D(128, 3, activation='relu', padding='same', kernel_initializer='he_normal')(conv8)
+    up9 = Conv2D(64, 2, activation='relu', padding='same', kernel_initializer='he_normal')(UpSampling2D(size=(2, 2))(conv8))
+    merge9 = concatenate([conv1, up9], axis=3)
+    conv9 = Conv2D(64, 3, activation='relu', padding='same', kernel_initializer='he_normal')(merge9)
+    conv9 = Conv2D(64, 3, activation='relu', padding='same', kernel_initializer='he_normal')(conv9)
+    conv9 = Conv2D(2, 3, activation='relu', padding='same', kernel_initializer='he_normal')(conv9)
+    conv10 = Conv2D(filters_number, 1, activation='softmax')(conv9)
+    model = Model(inputs, conv10)
+    if pretrained_weights is not None:
+        model.load_weights(pretrained_weights)
+    return model
 
 
 if __name__ == '__main__':
-    model = Unet((512, 512, 3), 11)
+    model = unet((512, 512, 3), 11)
     print(model.summary())
