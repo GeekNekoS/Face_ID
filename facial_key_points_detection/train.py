@@ -68,7 +68,6 @@ def read_image_mask(img_path, dots_path):
     return resized_img, dots_array
 
 
-
 def preprocess(x, y):
     def f(x, y):
         x = x.decode()

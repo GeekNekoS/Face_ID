@@ -24,5 +24,4 @@ def preprocess_image(image: np.ndarray, new_size: tuple[int, int], convert_color
     resized_image = resize_image(image, new_size)
     if convert_color_options is not None:
         resized_image = cv2.cvtColor(resized_image, convert_color_options)
-    resized_image = np.expand_dims(resized_image, axis=0)
     return resized_image
