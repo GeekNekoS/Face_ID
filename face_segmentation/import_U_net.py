@@ -1,10 +1,10 @@
 import os
-from import_model import import_model_from_yadisk
+from yandex_disk.import_model_from_yandex_disk import import_model_from_yandex_disk
 from dotenv import load_dotenv
 load_dotenv('../yandex.env')
 
 
-def import_U_net(custom_objects: dict, yadisk_url_download: str = os.getenv('YANDEX_DISK_DOWNLOAD'), yadisk_token: str = os.getenv('YANDEX_DISK_API_TOKEN'), yadisk_path: str = os.getenv('FACE_SEGMENTATION_MODEL_PATH'), path: str = 'face_segmentation_model.h5', save_model: bool = False):
+def import_model(custom_objects: dict, yadisk_url_download: str = os.getenv('YANDEX_DISK_DOWNLOAD'), yadisk_token: str = os.getenv('YANDEX_DISK_API_TOKEN'), yadisk_path: str = os.getenv('FACE_SEGMENTATION_MODEL_PATH'), path: str = 'face_segmentation_model.h5', save_model: bool = False):
     """
     Import U_net model.
     :param custom_objects: dict, custom objects for load models
@@ -15,5 +15,5 @@ def import_U_net(custom_objects: dict, yadisk_url_download: str = os.getenv('YAN
     :param save_model: bool, save file with model in project or not [optional]
     :return: U_net model
     """
-    model = import_model_from_yadisk(yadisk_url_download, yadisk_token, yadisk_path, path, custom_objects, save_model)
+    model = import_model_from_yandex_disk(yadisk_url_download, yadisk_token, yadisk_path, path, save_model, custom_objects)
     return model
