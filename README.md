@@ -69,7 +69,6 @@
 ## Полезные команды
  - Активация виртуального окружения (Ubuntu): `source venv/bin/activate`
  - Сохранить список зависимостей в файл requirements.txt: `pip freeze > requirements.txt`
- - Не забывайте активировать venv при работе через консоль Ubuntu: `source venv/bin/activate`
  - Отобразить зависимости в консоль: `pip list`
  - Удалить файл из контроля версий: `git rm --cache [путь до файла]`
  - Удалить все зависимости: `pip uninstall -y -r requirements.txt`
